@@ -1,44 +1,12 @@
 <?php
 
 /**
- * Apphp bootstrap file
- *
- * @project ApPHP Framework
- * @author ApPHP <info@apphp.com>
- * @link http://www.apphpframework.com/
- * @copyright Copyright (c) 2012 ApPHP Framework
- * @license http://www.apphpframework.com/license/
- *
- * PUBLIC:					PROTECTED:					PRIVATE:		
- * ----------               ----------                  ----------
- * __construct              registerCoreComponents      autoload
- * run                      onBeginRequest
- * getVersion
- * powered
- * setComponent
- * getComponent
- * getRequest
- * getSession
- * setTimeZone
- * getTimeZone
- * attachEventHandler
- * detachEventHandler
- * hasEvent
- * hasEventHandler
- * raiseEvent
- * mapAppModule
- * 
- * STATIC:
- * ---------------------------------------------------------------
- * init
- * app
- * 
+ * App bootstrap file
  */
 class App {
 
     /** 	@var object View */
     public $view;
-
 
     /** @var object */
     private static $_instance;
@@ -56,10 +24,14 @@ class App {
             'Router' => 'core/Router.php',
             'Filter' => 'helpers/Filter.php',
             'Controller' => 'core/Controller.php',
+            'Language' => 'core/Language.php',
+            'Session' => 'core/Session.php',
     );
 
     /** @var array */
     private static $_coreComponents = array(
+            'Session' => 'Session',
+            'Language' => 'Language'
               /* 	'session' 		=> 'HttpSession',
                 'request' 		=> 'HttpRequest',
                 'clientScript'  => 'ClientScript', */
@@ -117,9 +89,9 @@ class App {
             ini_set('log_errors', 'On');
             ini_set('error_log', APP_PATH . DS . 'protected' . DS . 'tmp' . DS . 'logs' . DS . 'error.log');
         }
-    
+
         // register framework core components
-        $this->registerCoreComponents();      
+        $this->registerCoreComponents();
 
         // load view
         $this->view = new View();
@@ -132,7 +104,7 @@ class App {
     /**
      * Class init constructor
      * @param array $config
-     * @return Apphp
+     * @return App
      */
     public static function init($config = array())
     {
@@ -144,14 +116,12 @@ class App {
     /**
      * Returns A object
      * @param array $config
-     * @return Apphp
+     * @return App
      */
     public static function app()
     {
         return self::$_instance;
     }
-
-
 
     /**
      * Autoloader
@@ -168,22 +138,14 @@ class App {
         {
             $classNameItems = preg_split('/(?=[A-Z])/', $className);
             print_r($classNameItems);
-            // $classNameItems[0] - 
-            // $classNameItems[1] - ClassName
-            // $classNameItems[2] - Type (Controller, Model etc..)
+
             if (isset($classNameItems[2]) && isset(self::$_classMap[$classNameItems[2]]))
             {
-                 $classCoreDir = APP_PATH . DS . 'protected' . DS . self::$_classMap[$classNameItems[2]];
-                
-                 $classFile = $classCoreDir . DS . $className . '.php';
+                $classCoreDir = APP_PATH . DS . 'protected' . DS . self::$_classMap[$classNameItems[2]];
+
+                $classFile = $classCoreDir . DS . $className . '.php';
                 if (is_file($classFile))
                 {
-                    
-                    require_once $classFile;
-                } else
-                {                  
-                    $classModuleDir = APP_PATH . DS . 'protected' . DS . $this->mapAppModule($classNameItems[1]) . self::$_classMap[$classNameItems[2]];
-                    $classFile = $classModuleDir . DS . $className . '.php';
                     require_once $classFile;
                 }
             }
@@ -218,15 +180,6 @@ class App {
     }
 
     /**
-     * Returns the client script component
-     * @return ClientScript component
-     */
-    public function getClientScript()
-    {
-        return $this->getComponent('clientScript');
-    }
-
-    /**
      * Returns the request component
      * @return HttpRequest component
      */
@@ -236,22 +189,21 @@ class App {
     }
 
     /**
-     * Returns the session component
-     * @return HttpSession component
+     * Returns the Language class
+     * @return Language class
+     */
+    public function getLanguage()
+    {
+        return $this->getComponent('Language');
+    }
+
+    /**
+     * Returns the Session class
+     * @return Session class
      */
     public function getSession()
     {
-        return $this->getComponent('session');
-    }
- 
-
-    /**
-     * Maps application modules
-     * @param string $class
-     */
-    public function mapAppModule($class)
-    {
-        return isset(self::$_appModules[strtolower($class)]) ? self::$_appModules[strtolower($class)] : '';
+        return $this->getComponent('Session');
     }
 
     /**

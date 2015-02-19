@@ -2,27 +2,6 @@
 
 /**
  * View base class file
- *
- * @project ApPHP Framework
- * @author ApPHP <info@apphp.com>
- * @link http://www.apphpframework.com/
- * @copyright Copyright (c) 2012 ApPHP Framework
- * @license http://www.apphpframework.com/license/
- *
- * PUBLIC:					PROTECTED:					PRIVATE:		
- * ----------               ----------                  ----------
- * __set
- * __get
- * setMetaTags
- * render
- * setTemplate
- * setController
- * setAction
- * getContent
- * 
- * STATIC:
- * ---------------------------------------------------------------
- * 
  */
 class View {
 
@@ -44,15 +23,6 @@ class View {
     /** 	@var string */
     private $_activeMenu;
 
-    /** 	@var string */
-    private $_pageTitle;
-
-    /** 	@var string */
-    private $_pageKeywords;
-
-    /** 	@var string */
-    private $_pageDescription;
-
     /** @var array */
     private $_vars = array();
 
@@ -73,25 +43,6 @@ class View {
     public function __get($index)
     {
         return isset($this->_vars[$index]) ? $this->_vars[$index] : '';
-    }
-
-    /**
-     * 	Sets meta tags for page
-     * 	@param string $tag
-     * 	@param mixed $value
-     */
-    public function setMetaTags($tag, $val)
-    {
-        if ($tag === 'title')
-        {
-            $this->_pageTitle = $val;
-        } else if ($tag === 'keywords')
-        {
-            $this->_pageKeywords = $val;
-        } else if ($tag === 'description')
-        {
-            $this->_pageDescription = $val;
-        }
     }
 
     /**
@@ -127,61 +78,49 @@ class View {
                 }
             }
 
-            if (APPHP_MODE == 'test')
+            $template = APP_PATH . DS . 'templates' . DS . (!empty($this->_template) ? $this->_template . DS : '') . 'default.php';
+            if (!file_exists($template))
             {
-                return $controller . '/' . $view;
-            } else
+                $isTemplateFound = false;
+                if (!empty($this->_template))
+                {
+                    
+                }
+            }
+            $appFile = APP_PATH . DS . 'protected' . DS . 'views' . DS . $controller . DS . $view . '.php';
+            $viewFile = $appFile;
+            if (is_file($viewFile))
             {
-                $template = APP_PATH . DS . 'templates' . DS . (!empty($this->_template) ? $this->_template . DS : '') . 'default.php';
-                if (!file_exists($template))
-                {
-                    $isTemplateFound = false;
-                    if (!empty($this->_template))
-                    {
-                    }
-                }
-                $appFile = APP_PATH . DS . 'protected' . DS . 'views' . DS . $controller . DS . $view . '.php';
-                $viewFile = $appFile;
-                if (is_file($viewFile))
-                {
-                    // check application view
-                } else
-                {
-                    // check component view
-                    $componentView = APP_PATH . DS . 'protected' . DS . App::app()->mapAppModule($controller) . 'views' . DS . $controller . DS . $view . '.php';
-                    if (is_file($componentView))
-                    {
-                        $viewFile = $componentView;
-                    }
-                }
+                // check application view
+            }
 
-                foreach ($this->_vars as $key => $value)
-                {
-                    $$key = $value;
-                }
+            foreach ($this->_vars as $key => $value)
+            {
+                $$key = $value;
+            }
+            ob_start();
+            include $viewFile;
+            $this->_content = ob_get_contents();
+            ob_end_clean();
+
+            if ($isTemplateFound)
+            {
                 ob_start();
-                include $viewFile;
-                $this->_content = ob_get_contents();
+                include $template;
+                $template_content = ob_get_contents();
                 ob_end_clean();
 
-                if ($isTemplateFound)
-                {
-                    ob_start();
-                    include $template;
-                    $template_content = ob_get_contents();
-                    ob_end_clean();
+                // render registered scripts					
+                App::app()->getClientScript()->render($template_content);
 
-                    // render registered scripts					
-                    App::app()->getClientScript()->render($template_content);
-
-                    echo $template_content;
-                } else
-                {
-                    echo $this->_content;
-                }
+                echo $template_content;
+            } else
+            {
+                echo $this->_content;
             }
         } catch (Exception $e)
         {
+            
         }
     }
 
