@@ -9,13 +9,25 @@ class IndexController extends Controller {
 
     public function indexAction()
     {
-        $this->view->text = 'Hello World!';
-        $this->view->render('index/index');
-    }
 
-    public function index2Action()
-    {
-        $this->view->text = 'Hello World!';
+        echo "<pre>";
+        print_r($_COOKIE);
+        print_r($_SESSION);
+        echo "</pre>";
+        
+        
+        $this->view->langs = array();
+        $langs = Language::init()->getlanguages();
+        foreach ($langs as $lang)
+        {
+            $arr2["data"][$lang] = array(
+                    "url" => "index",
+                    "name" => App::app()->t($lang)
+                    );
+        }
+        
+        $this->view->langs = $arr2;
+        $this->view->text = Language::init()->getLang();
         $this->view->render('index/index');
     }
 

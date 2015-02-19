@@ -25,29 +25,13 @@ class Router {
      */
     public function __construct()
     {
+
         $request = isset($_GET['url']) ? $_GET['url'] : '';
-        echo App::app()->getLanguage()->getLang();
-        echo "<br>";
-        App::app()->getLanguage()->setLang("en");
-        echo App::app()->getLanguage()->getLang();
-        echo "<br>";
-        echo Session::init()->getSessionName();
-        echo "<br>";
-        echo Session::init()->getSessionId();
-        echo "<br>";
-        echo Session::init()->set("some", "123");
-        echo Session::init()->get("some");
-        echo "<br>";
-        $lang = array(
-                "ru", "en"
-        );
 
-        $split = explode('/', trim($request, '/'));
 
-        if (in_array($split[0], $lang))
-        {
-            array_shift($split);
-        }
+        $split = $this->getLangFormUrl($request);
+
+
         if ($split)
         {
             foreach ($split as $index => $part)
@@ -82,6 +66,24 @@ class Router {
             $defaultAction = Config::get('defaultAction');
             $this->_action = !empty($defaultAction) ? Filter::sanitize('alphanumeric', $defaultAction) : 'index';
         }
+    }
+
+    public function getLangFormUrl($url)
+    {
+        $split = explode('/', trim($url, '/'));
+
+        $langs = Language::init()->getlanguages();
+
+        if (in_array($split[0], $langs))
+        {
+            Language::init()->setLang($split[0]);
+
+            array_shift($split);
+        } else
+        {
+            Language::init()->setLang(Config::get("defaultLanguage"));
+        }
+        return $split;
     }
 
     /** 	 

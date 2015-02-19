@@ -9,6 +9,6 @@ return array(
         'defaultLanguage' => 'ru',
         'languages' => array(
                 "ru",
-                "en",
+                "en"
         ),
 );

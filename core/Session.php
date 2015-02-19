@@ -20,7 +20,8 @@ class Session {
      * @var int
      */
     private $_prefix = '';
-
+    private $cookiesLifeTime = 1;
+    private $_cookiesLifeTime;
     /**
      * @var string
      * only | allow | none
@@ -29,6 +30,8 @@ class Session {
 
     public function __construct()
     {
+        $this->setCookiesLifeTime();
+        
         $this->setCookieMode($this->_cookieMode);
 
         $this->setSessionName();
@@ -65,6 +68,36 @@ class Session {
     public function get($name, $default = '')
     {
         return isset($_SESSION[$name]) ? $_SESSION[$name] : $default;
+    }
+
+    private function setCookiesLifeTime()
+    {
+        return $this->_cookiesLifeTime = time() + 60 * 60 * 24 * $this->cookiesLifeTime;
+    }
+
+    private function getCookiesLifeTime()
+    {
+        return isset($this->_cookiesLifeTime) ? $this->_cookiesLifeTime : 0;
+    }
+
+    /**
+     * Sets Cookie variable 
+     * @param string $name
+     * @param mixed $value
+     */
+    public function setCookie($name, $value)
+    {
+        setcookie($name, $value, $this->getCookiesLifeTime(),"/");
+    }
+
+    /**
+     * Returns Cookie variable 
+     * @param string $name
+     * @param mixed $default
+     */
+    public function getCookie($name, $default = '')
+    {
+        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $default;
     }
 
     /**

@@ -152,6 +152,45 @@ class App {
         }
     }
 
+    public function t($key)
+    {
+        $classCoreDir = APP_PATH . DS . 'protected';
+        $lang = $this->getLanguage()->getLang();
+        $defLang = Config::get("defaultLanguage");
+        $langFile = $classCoreDir . DS . 'lang' . DS . $lang . '.php';
+        $defFile = '';
+        if ($lang != $defLang)
+        {
+            $defFile = $classCoreDir . DS . 'lang' . DS . $defLang . '.php';
+        }
+
+        if ($text = $this->getText($langFile, $key))
+        {
+            return $text;
+        } else if ($text = $this->getText($defFile, $key))
+        {
+            return $text;
+        } else
+        {
+            return $key;
+        }
+    }
+
+    private function getText($File, $key)
+    {
+        if (is_file($File))
+        {
+            $langText = require($File);
+        } 
+        if (isset($langText[$key]))
+        {
+            return $langText[$key];
+        } else
+        {
+            return false;
+        }
+    }
+
     /**
      * Puts a component under the management of the application
      * @param string $id
