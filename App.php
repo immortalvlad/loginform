@@ -19,6 +19,8 @@ class App {
 
     /** @var array */
     private static $_coreClasses = array(
+            'DB' => 'core/DB.php',
+            'Model' => 'core/Model.php',
             'Config' => 'collections/Config.php',
             'View' => 'core/View.php',
             'Router' => 'core/Router.php',
@@ -95,7 +97,7 @@ class App {
 
         // load view
         $this->view = new View();
-        $this->view->setTemplate(Config::get('defaultTemplate'));
+        //$this->view->setTemplate(Config::get('defaultTemplate'));
 
         $router = new Router();
         $router->route($this);

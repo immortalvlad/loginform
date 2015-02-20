@@ -126,5 +126,22 @@ class Router {
     {
         return self::$_params;
     }
+    /**
+     * Return parametr value 
+     * @param string $key
+     * @return boolean
+     */
+    public static function getParamsByKey($key)
+    {
+        $params = self::getParams();
+
+        if (array_key_exists($key, $params))
+        {
+            return $params[$key];
+        } else
+        {
+            return false;
+        }
+    }
 
 }

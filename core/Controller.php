@@ -22,7 +22,7 @@
  */
 class Controller {
 
-    /** @var string */
+    /** @var View */
     protected $view;
 
     /**

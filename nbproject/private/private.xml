@@ -4,12 +4,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/E:/OpenServer/domains/LoginForm/protected/lang/ru.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/core/Language.php</file>
             <file>file:/E:/OpenServer/domains/LoginForm/core/View.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protected/views/index/index.php</file>
             <file>file:/E:/OpenServer/domains/LoginForm/core/Router.php</file>
-            <file>file:/E:/OpenServer/domains/LoginForm/protected/controllers/FormController.php</file>
             <file>file:/E:/OpenServer/domains/LoginForm/App.php</file>
-            <file>file:/E:/OpenServer/domains/LoginForm/index.php</file>
-            <file>file:/E:/OpenServer/domains/LoginForm/collections/Config.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protected/controllers/IndexController.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/core/Controller.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protected/lang/en.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/core/Session.php</file>
             <file>file:/E:/OpenServer/domains/LoginForm/protected/config/main.php</file>
         </group>
     </open-files>
