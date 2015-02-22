@@ -6,16 +6,12 @@
 class Router {
 
     /** 	@var string */
-    private $_path;
-
-    /** 	@var string */
     private $_controller;
 
     /** 	@var string */
     private $_action;
 
-    /** 	@var string */
-    private $_module;
+
 
     /** @var array */
     private static $_params = array();

@@ -15,6 +15,22 @@ class UserphoneModel extends Model {
         $this->mainModel();
     }
 
+    public function rules()
+    {
+        return array(
+                  // array('', 'required'),
+        );
+    }
+
+    public function attributeLabels()
+    {
+        return array(
+                $this->tableName => array(
+                        'value' => App::app()->t("phone_value"),
+                )
+        );
+    }
+
     /**
      * 
      * @return self

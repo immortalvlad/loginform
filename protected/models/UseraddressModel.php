@@ -15,6 +15,23 @@ class UseraddressModel extends Model {
         $this->mainModel();
     }
 
+    public function rules()
+    {
+        return array(
+                  //     array('', 'required'),
+        );
+    }
+
+    public function attributeLabels()
+    {
+        return array(
+                $this->tableName => array(
+                        'country_id' => App::app()->t("country_id"),
+                        'city_id' => App::app()->t("city_id"),
+                )
+        );
+    }
+
     /**
      * 
      * @return self

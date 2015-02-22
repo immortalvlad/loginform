@@ -15,6 +15,28 @@ class UserModel extends Model {
         $this->mainModel();
     }
 
+    public function rules()
+    {
+        return array(
+                // username and password are required
+                array('email, password', 'required'),
+        );
+    }
+
+    public function attributeLabels()
+    {
+        return array(
+                $this->tableName => array(
+                        'email' => App::app()->t("email"),
+                        'password' => App::app()->t("password"),
+                        'date_added' => App::app()->t("date_added"),
+                        'status' => App::app()->t("status"),
+                        'first_name' => App::app()->t("first_name"),
+                        'last_name' => App::app()->t("last_name"),
+                )
+        );
+    }
+
     /**
      * 
      * @return self
@@ -25,7 +47,7 @@ class UserModel extends Model {
         {
             self::$_instance = new self();
         }
-        
+
         return self::$_instance;
     }
 

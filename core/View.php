@@ -142,6 +142,11 @@ class View {
         $this->_controller = $controller;
     }
 
+    public function getController()
+    {
+        return $this->_controller;
+    }
+
     /** 	 
      * Action setter
      * @param string $action
@@ -149,6 +154,11 @@ class View {
     public function setAction($action)
     {
         $this->_action = $action;
+    }
+
+    public function getAction()
+    {
+        return $this->_action;
     }
 
     /** 	 

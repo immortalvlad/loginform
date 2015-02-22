@@ -15,6 +15,23 @@ class UserpictureModel extends Model {
         $this->mainModel();
     }
 
+    public function rules()
+    {
+        return array(
+                  // array('', 'required'),
+        );
+    }
+
+    public function attributeLabels()
+    {
+        return array(
+                $this->tableName => array(
+                        'path' => App::app()->t("path"),
+                        'type' => App::app()->t("type"),
+                )
+        );
+    }
+
     /**
      * 
      * @return self

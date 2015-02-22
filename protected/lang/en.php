@@ -1,7 +1,16 @@
 <?php
 
 return array(
-        "lang"=>"English",
+        "lang" => "English",
         "en" => "English",
-        "ru" => "Russian"
+        "ru" => "Russian",
+        /////////////////////
+        'email' => "e-mail",
+        'password' => "password",
+        'date_added' => "Date added",
+        'status' => "Activation status",
+        'first_name' => "Name",
+        'last_name' => "Last Name",
 );
+
+

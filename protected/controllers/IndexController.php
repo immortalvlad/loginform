@@ -9,35 +9,50 @@ class IndexController extends Controller {
 
     public function indexAction()
     {
-
-        /* echo "<pre>";
-          print_r($_COOKIE);
-          print_r($_SESSION);
-          echo "</pre>";
-         */
-
         $langs = Language::init()->getlanguages();
         foreach ($langs as $lang)
         {
             $lang_arr["data"][$lang] = array(
-                    "url" => "index",
+                    "url" => $this->Url(),
                     "name" => App::app()->t($lang)
             );
         }
 
-
-//        $res = UserModel::model()->selectById(1);
-//        $res = UseraddressModel::model()->selectById(1);
-
-
         $this->view->langs = $lang_arr;
+
+
+        echo "<pre>";
+//        print_r($attributes);
+//        print_r($_COOKIE);
+//        print_r($_SESSION);
+        echo "</pre>";
+        $this->view->attributes = $this->combineAttributes();
+
+        $this->view->adctionPath = $this->getUrlByPath("index/add");
+
         $this->view->text = Language::init()->getLang();
+
         $this->view->render('index/loginForm');
+        $this->view->render('index/index');
     }
 
-    public function addUserAction()
+    private function combineAttributes()
     {
-        echo "add";
+        $attributes = array();
+        $attributes +=array_merge(UserModel::model()->attributeLabels());
+        $attributes +=array_merge(UseraddressModel::model()->attributeLabels());
+        $attributes +=array_merge(UserphoneModel::model()->attributeLabels());
+        $attributes +=array_merge(UserpictureModel::model()->attributeLabels());
+        return $attributes;
+    }
+
+    public function addAction()
+    {
+        //echo "add";
+        $this->redirect("index");
+        $this->indexAction();
+
+        exit;
     }
 
     public function delUserAction()
@@ -55,13 +70,14 @@ class IndexController extends Controller {
     {
         $userId = UserModel::model()->insert(array(
                 "email" => "gggggg",
+                'password' => "fdsfsdfsdfdfd",
                 "date_added" => date("Y-m-d H:i:s"),
                 "status" => "1",
                 "first_name" => "1",
                 "last_name" => "1"
                   )
         );
-        UseraddressModel::model()->insert(array(
+      /*  UseraddressModel::model()->insert(array(
                 "user_entity_id" => $userId,
                 "country_id" => "2",
                 "city_id" => "1"
@@ -78,6 +94,7 @@ class IndexController extends Controller {
                 "type" => "jpg"
                   )
         );
+        $this->redirect("index");*/
 //        echo "last insert id =" . $UserId;
     }
 

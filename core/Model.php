@@ -16,6 +16,11 @@ abstract class Model {
         $this->prfx = DB::getInstance()->getPrefix();
     }
 
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
+
     /**
      * Select records by id
      * @param int  $id

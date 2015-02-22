@@ -25,12 +25,15 @@ class App {
             'View' => 'core/View.php',
             'Router' => 'core/Router.php',
             'Filter' => 'helpers/Filter.php',
+            'Helper' => 'helpers/Helper.php',
             'Controller' => 'core/Controller.php',
             'Language' => 'core/Language.php',
             'Session' => 'core/Session.php',
     );
 
-    /** @var array */
+    /**
+     * All this classes run after init App.  
+     * @var array */
     private static $_coreComponents = array(
             'Session' => 'Session',
             'Language' => 'Language'
@@ -139,7 +142,7 @@ class App {
         } else
         {
             $classNameItems = preg_split('/(?=[A-Z])/', $className);
-            print_r($classNameItems);
+            //print_r($classNameItems);
 
             if (isset($classNameItems[2]) && isset(self::$_classMap[$classNameItems[2]]))
             {
