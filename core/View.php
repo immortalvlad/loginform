@@ -51,11 +51,10 @@ class View {
      * @throws Exception
      * @return void
      */
-    public function render($params)
+    public function render($params, $part = false)
     {
         try
         {
-            $isTemplateFound = true;
 
             $paramsParts = explode('/', $params);
 
@@ -78,49 +77,43 @@ class View {
                 }
             }
 
-            $template = APP_PATH . DS . 'templates' . DS . (!empty($this->_template) ? $this->_template . DS : '') . 'default.php';
-            if (!file_exists($template))
-            {
-                $isTemplateFound = false;
-                if (!empty($this->_template))
-                {
-                    
-                }
-            }
-            $appFile = APP_PATH . DS . 'protected' . DS . 'views' . DS . $controller . DS . $view . '.php';
+            $appFile = APP_PATH . DS . 'protect' . DS . 'views' . DS . $controller . DS . $view . '.php';
             $viewFile = $appFile;
             if (is_file($viewFile))
             {
-                // check application view
+                foreach ($this->_vars as $key => $value)
+                {
+                    $$key = $value;
+                }
+//                ob_start();
+//                $this->_content = ob_get_contents();
+//                ob_end_clean();
+                !$part ? $this->header(): '';
+                include $viewFile;
+                !$part ? $this->footer(): '';
             }
-
-            foreach ($this->_vars as $key => $value)
-            {
-                $$key = $value;
-            }
-            ob_start();
-            include $viewFile;
-            $this->_content = ob_get_contents();
-            ob_end_clean();
-
-            if ($isTemplateFound)
-            {
-                ob_start();
-                include $template;
-                $template_content = ob_get_contents();
-                ob_end_clean();
-
-                // render registered scripts					
-                App::app()->getClientScript()->render($template_content);
-
-                echo $template_content;
-            } else
-            {
-                echo $this->_content;
-            }
+            echo $this->_content;
         } catch (Exception $e)
         {
             
+        }
+    }
+
+    public function header()
+    {
+        $appFile = APP_PATH . DS . 'protect' . DS . 'theme' . DS . 'header.php';
+        if (is_file($appFile))
+        {
+            include $appFile;
+        }
+    }
+
+    public function footer()
+    {
+        $appFile = APP_PATH . DS . 'protect' . DS . 'theme' . DS . 'footer.php';
+        if (is_file($appFile))
+        {
+            include $appFile;
         }
     }
 

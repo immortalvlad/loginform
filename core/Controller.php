@@ -32,6 +32,15 @@ class Controller {
     function __construct()
     {
         $this->view = App::app()->view;
+
+        $this->view->changepasswordpage = $this->getUrlByPath("user/changepassword");
+        $this->view->forgotpasswordpage = $this->getUrlByPath("user/forgotpassword");
+        $this->view->logoutpage = $this->getUrlByPath("index/logout");
+        $this->view->updatepage = $this->getUrlByPath("index/update");
+        $this->view->registerpage = $this->getUrlByPath("index/register");
+        $this->view->loginpage = $this->getUrlByPath("login");
+        $this->view->userpfrofilepage = $this->getUrlByPath("user/profile");
+        $this->view->backpage = $this->getUrlByPath("index");
     }
 
     /**
@@ -65,6 +74,11 @@ class Controller {
         $this->view->render('error/index');
     }
 
+    /**
+     * Return url path by action
+     * @param string Action ex: index/action
+     * @return string
+     */
     public function getUrlByPath($action)
     {
         $lang = Language::init()->getLang();

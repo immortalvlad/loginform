@@ -3,6 +3,16 @@
     <coverage xmlns="http://www.netbeans.org/ns/code-coverage/1" enabled="false"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/theme/js/testupload.js</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/controllers/UploadController.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/theme/css/style.css</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/theme/js/upload.js</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/views/index/uploadForm.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/views/upload/testupload2.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/components/Captcha.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/theme/js/captcha.js</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/views/upload/testupload.php</file>
+        </group>
     </open-files>
 </project-private>

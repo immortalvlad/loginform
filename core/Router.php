@@ -11,15 +11,14 @@ class Router {
     /** 	@var string */
     private $_action;
 
-
-
     /** @var array */
     private static $_params = array();
+    private static $_instance;
 
     /**
      * Class constructor
      */
-    public function __construct()
+    private function __construct()
     {
 
         $request = isset($_GET['url']) ? $_GET['url'] : '';
@@ -64,6 +63,28 @@ class Router {
         }
     }
 
+    public function getController()
+    {
+        return $this->_controller;
+    }
+
+    public function getAction()
+    {
+        return $this->_action;
+    }
+
+    /**
+     * Class init constructor
+     * @param array $config
+     * @return App
+     */
+    public static function init()
+    {
+        if (self::$_instance == null)
+            self::$_instance = new self();
+        return self::$_instance;
+    }
+
     public function getLangFormUrl($url)
     {
         $split = explode('/', trim($url, '/'));
@@ -88,14 +109,18 @@ class Router {
      */
     public function route(App $registry)
     {
-        $appDir = APP_PATH . DS . 'protected' . DS . 'controllers' . DS;
+        $appDir = APP_PATH . DS . 'protect' . DS . 'controllers' . DS;
         $file = $this->_controller . 'Controller.php';
 
         if (is_file($appDir . $file))
         {
             $class = $this->_controller . 'Controller';
+        } else
+        {
+            header("Location: /");
         }
         $registry->view->setController($this->_controller);
+
         $controller = new $class();
 
         if (is_callable(array($controller, $this->_action . 'Action')))
@@ -122,6 +147,7 @@ class Router {
     {
         return self::$_params;
     }
+
     /**
      * Return parametr value 
      * @param string $key

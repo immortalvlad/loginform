@@ -30,14 +30,17 @@ class Language {
             self::$_instance = new self();
         return self::$_instance;
     }
-
+    /**
+     * Return current site languege
+     * @return string
+     */
     public function getLang()
     {
         return $this->_lang;
     }
 
     /**
-     * 
+     * Return all available languages in site
      * @return array
      */
     public function getlanguages()
@@ -50,7 +53,10 @@ class Language {
             return array(Config::get("defaultLanguage"));
         }
     }
-
+    /**
+     * Set site languege
+     * @param string Language
+     */
     public function setLang($lang)
     {
         $languages = Config::get("languages");
@@ -58,7 +64,7 @@ class Language {
         {
             $this->_lang = $lang;
           //  Session::init()->set($this->cookieLangName, $lang);
-            Session::init()->setCookie($this->cookieLangName, $lang);
+            Session::init()->setCookie($this->cookieLangName, $lang,  Config::get('cookie_lang_expiry'));
         }
     }
 

@@ -21,11 +21,23 @@ class App {
     private static $_coreClasses = array(
             'DB' => 'core/DB.php',
             'Model' => 'core/Model.php',
-            'Config' => 'collections/Config.php',
+            'Config' => 'components/Config.php',
+            'InputRequest' => 'components/InputRequest.php',
+            'Form' => 'components/Form.php',
+            'HTML' => 'components/HTML.php',
+            'Token' => 'components/Token.php',
+            'Auth' => 'components/Auth.php',
+            'AuthState' => 'components/AuthState.php',
+            'Hash' => 'components/Hash.php',
+            'Captcha' => 'components/Captcha.php',
             'View' => 'core/View.php',
             'Router' => 'core/Router.php',
             'Filter' => 'helpers/Filter.php',
             'Helper' => 'helpers/Helper.php',
+            'Widget' => 'helpers/Widget.php',
+            'Mail' => 'helpers/Mail.php',
+            'Message' => 'helpers/Message.php',
+            'Translate' => 'helpers/Translate.php',
             'Controller' => 'core/Controller.php',
             'Language' => 'core/Language.php',
             'Session' => 'core/Session.php',
@@ -36,7 +48,10 @@ class App {
      * @var array */
     private static $_coreComponents = array(
             'Session' => 'Session',
-            'Language' => 'Language'
+            'Language' => 'Language',
+            'InputRequest' => 'InputRequest',
+            'Auth' => 'Auth',
+            'AuthState' => 'AuthState'
               /* 	'session' 		=> 'HttpSession',
                 'request' 		=> 'HttpRequest',
                 'clientScript'  => 'ClientScript', */
@@ -92,7 +107,7 @@ class App {
             error_reporting(E_ALL);
             ini_set('display_errors', 'Off');
             ini_set('log_errors', 'On');
-            ini_set('error_log', APP_PATH . DS . 'protected' . DS . 'tmp' . DS . 'logs' . DS . 'error.log');
+            ini_set('error_log', APP_PATH . DS . 'protect' . DS . 'tmp' . DS . 'logs' . DS . 'error.log');
         }
 
         // register framework core components
@@ -102,7 +117,7 @@ class App {
         $this->view = new View();
         //$this->view->setTemplate(Config::get('defaultTemplate'));
 
-        $router = new Router();
+        $router = Router::init();
         $router->route($this);
     }
 
@@ -134,19 +149,37 @@ class App {
      * @return void
      */
     private function autoload($className)
-    {
-        if (isset(self::$_coreClasses[$className]))
+    {   //user namespaces
+        if (strpos($className, '\\'))
+        {
+            $className = ltrim($className, '\\');
+            $fileName = '';
+            $namespace = '';
+            if ($lastNsPos = strrpos($className, '\\'))
+            {
+                $namespace = substr($className, 0, $lastNsPos);
+                $className = substr($className, $lastNsPos + 1);
+                $fileName = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+            }
+            $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+
+            require $fileName;
+        }
+        //use core
+        else if (isset(self::$_coreClasses[$className]))
         {
             // use include so the error PHP file may appear
             include(dirname(__FILE__) . DS . self::$_coreClasses[$className]);
-        } else
+        }
+        ///use map
+        else
         {
             $classNameItems = preg_split('/(?=[A-Z])/', $className);
             //print_r($classNameItems);
 
             if (isset($classNameItems[2]) && isset(self::$_classMap[$classNameItems[2]]))
             {
-                $classCoreDir = APP_PATH . DS . 'protected' . DS . self::$_classMap[$classNameItems[2]];
+                $classCoreDir = APP_PATH . DS . 'protect' . DS . self::$_classMap[$classNameItems[2]];
 
                 $classFile = $classCoreDir . DS . $className . '.php';
                 if (is_file($classFile))
@@ -159,41 +192,8 @@ class App {
 
     public function t($key)
     {
-        $classCoreDir = APP_PATH . DS . 'protected';
-        $lang = $this->getLanguage()->getLang();
-        $defLang = Config::get("defaultLanguage");
-        $langFile = $classCoreDir . DS . 'lang' . DS . $lang . '.php';
-        $defFile = '';
-        if ($lang != $defLang)
-        {
-            $defFile = $classCoreDir . DS . 'lang' . DS . $defLang . '.php';
-        }
 
-        if ($text = $this->getText($langFile, $key))
-        {
-            return $text;
-        } else if ($text = $this->getText($defFile, $key))
-        {
-            return $text;
-        } else
-        {
-            return $key;
-        }
-    }
-
-    private function getText($File, $key)
-    {
-        if (is_file($File))
-        {
-            $langText = require($File);
-        } 
-        if (isset($langText[$key]))
-        {
-            return $langText[$key];
-        } else
-        {
-            return false;
-        }
+        return Translate::t($key);
     }
 
     /**
@@ -225,11 +225,11 @@ class App {
 
     /**
      * Returns the request component
-     * @return HttpRequest component
+     * @return InputRequest component
      */
     public function getRequest()
     {
-        return $this->getComponent('request');
+        return $this->getComponent('InputRequest');
     }
 
     /**

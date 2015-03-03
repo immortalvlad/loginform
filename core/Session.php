@@ -20,8 +20,8 @@ class Session {
      * @var int
      */
     private $_prefix = '';
-    private $cookiesLifeTime = 1;
     private $_cookiesLifeTime;
+
     /**
      * @var string
      * only | allow | none
@@ -31,7 +31,7 @@ class Session {
     public function __construct()
     {
         $this->setCookiesLifeTime();
-        
+
         $this->setCookieMode($this->_cookieMode);
 
         $this->setSessionName();
@@ -57,7 +57,20 @@ class Session {
      */
     public function set($name, $value)
     {
-        $_SESSION[$name] = $value;
+        return $_SESSION[$name] = $value;
+    }
+
+    public function deleteSession($name)
+    {
+        if ($this->isExists($name))
+        {
+            unset($_SESSION[$name]);
+        }
+    }
+
+    public function deleteCookie($name)
+    {
+        $this->setCookie($name, '', time() - 1);
     }
 
     /**
@@ -72,7 +85,7 @@ class Session {
 
     private function setCookiesLifeTime()
     {
-        return $this->_cookiesLifeTime = time() + 60 * 60 * 24 * $this->cookiesLifeTime;
+        return $this->_cookiesLifeTime = time() + Config::get('cookie_expiry');
     }
 
     private function getCookiesLifeTime()
@@ -85,9 +98,17 @@ class Session {
      * @param string $name
      * @param mixed $value
      */
-    public function setCookie($name, $value)
+    public function setCookie($name, $value, $time = 0)
     {
-        setcookie($name, $value, $this->getCookiesLifeTime(),"/");
+        if ($time == 0)
+        {
+            $time = $this->getCookiesLifeTime();
+        } else
+        {
+            $time = time() + $time;
+        }
+
+        setcookie($name, $value, $time, "/");
     }
 
     /**
@@ -107,6 +128,15 @@ class Session {
     public function isExists($name)
     {
         return isset($_SESSION[$name]) ? true : false;
+    }
+
+    /**
+     * Checks if cookie variable exists
+     * @param string $name
+     */
+    public function isCookieExists($name)
+    {
+        return isset($_COOKIE[$name]) ? true : false;
     }
 
     /**

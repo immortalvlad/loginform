@@ -8,7 +8,7 @@ defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 
 $apphp = 'App.php';
 //$apphp = dirname(__FILE__).'/../../framework/Apphp.php';
-$config = APP_PATH.'/protected/config/';
+$config = APP_PATH.'/protect/config/';
 define('APPHP_MODE', 'debug');
           
 require_once($apphp);

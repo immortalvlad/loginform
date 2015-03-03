@@ -1,5 +1,4 @@
 <?php
-
 class DB {
 
     private $DB_DRIVER;
@@ -7,13 +6,19 @@ class DB {
     private $DB_NAME;
     private $DB_USER;
     private $DB_PASS;
+   /**
+    *
+    * @var PDO 
+    */
     private $db;
+    private $_errorLog;
     private $prfx = '';
     private $test_rec = false;
     private static $_instance;
 
     private function __construct()
     {
+       
         $this->DB_DRIVER = Config::get("DB_DRIVER");
         $this->DB_HOST = Config::get("DB_HOST");
         $this->DB_NAME = Config::get("DB_NAME");
@@ -50,6 +55,12 @@ class DB {
         return $this->db;
     }
 
+    public function lastInsertId()
+    {
+         
+        return $this->db->lastInsertId();
+    }
+
     public function getPrefix()
     {
         return $this->prfx;
@@ -75,6 +86,60 @@ class DB {
         {
             die("Error: " . $e->getMessage());
         }
+    }
+
+    public function getError()
+    {
+        return $this->_errorLog;
+    }
+
+    /**
+     * Execute query
+     * Return array or false if nothing to be found
+     * @param type $sql
+     * @param type $params
+     * @return array | false
+     */
+    public function query($sql, $params = array(), $insert = '')
+    {
+        /* @var $query PDOStatement */
+        if ($query = $this->db->prepare($sql))
+        {
+            $x = 1;
+            if (count($params))
+            {
+                foreach ($params as &$param)
+                {
+                    $query->bindParam($x, $param);
+                    $x++;
+                }
+            }
+            try
+            {
+                if ($query->execute())
+                {
+                    if ($insert == "insert")
+                    {
+                        return $this->db->lastInsertId();
+                    } else
+                    {
+                        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+                        if (empty($results))
+                        {
+                            $results = FALSE;
+                        }
+                    }
+                } else
+                {
+                    $results = FALSE;
+                }
+            } catch (PDOException $e)
+            {
+                $this->_errorLog = 'insert [ ln.:' . $e->getLine() . ']' . $e->getMessage() . ' => ' . $sql;
+                return false;
+            }
+        }
+        return $results;
     }
 
 }
