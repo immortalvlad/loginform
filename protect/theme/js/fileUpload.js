@@ -12,26 +12,9 @@ var fileUploader = fileUploader || function(options) {
 (function(FU) {
     FU.upload = function() {
         o.InputfilesId.addEventListener('change', FU.fileSelect, false);
-        o.dropZoneId.addEventListener('dragover', FU.handleDragOver, false);
-        o.dropZoneId.addEventListener('dragleave', FU.handleDragLeave, false);
-        o.dropZoneId.addEventListener('drop', FU.fileSelect, false);
         o.dropZoneId.addEventListener('click', FU.handleClick, false);
     }
-    FU.handleDragOver = function(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
 
-        evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-        o.transFile = evt.dataTransfer.files;
-
-//        console.log(f);
-        this.className = 'dragover';
-    }
-    FU.handleDragLeave = function(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        this.className = '';
-    }
     FU.fileSelect = function(e) {
         e.stopPropagation();
         e.preventDefault();

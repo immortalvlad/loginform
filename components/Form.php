@@ -82,7 +82,7 @@ class Form {
                         $m = Translate::t("$1 is required", $table_rule_t);
                         $this->addError($m);
                         $this->addFieldError($table, $table_rule, $m);
-                    } else
+                    } else  if (!empty($value) || $rule_name=='type')
                     {
                         switch ($rule_name)
                         {
@@ -138,6 +138,10 @@ class Form {
                                         $allowed = Config::get('file_allowed');
                                         $maxSize = Config::get('file_max_size');
 //                                        InputRequest::getFormPost($table, $rule_value);
+                                        if (!isset($_FILES[$table]))
+                                        {
+                                            continue;
+                                        }
                                         if (is_array($_FILES[$table]['error'][$table_rule]))
                                         {
                                             $m = Translate::t("Allow load only one picture");

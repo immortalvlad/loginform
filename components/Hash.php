@@ -6,6 +6,10 @@ class Hash {
     { 
         return hash('sha256', $string . $salt);
     }
+    public static function md5make($string)
+    {
+         return md5($string);
+    }
 
     public static function salt()
     {

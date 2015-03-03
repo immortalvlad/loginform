@@ -23,6 +23,7 @@ class HTML {
 
     public static function inputText(Form $form, Model $model, $name, $type = 'text')
     {
+      
         $errorClass = '';
         if ($form->getFieldError($model->getTableName(), $name))
         {
@@ -33,7 +34,7 @@ class HTML {
         <?php echo $errorClass; ?>
                name="<?php echo $model->getTableName() . "[" . $name . "]" ?>" 
                id="<?php echo $name . ucfirst($model->getTableName()) ?>" 
-               value="<?php echo $type != 'password' ? InputRequest::getFormPost($model->getTableName(), $name) : '' ?>">
+               value="<?php echo ($type !== 'password' &&  $type !== 'captcha') ? InputRequest::getFormPost($model->getTableName(), $name) : '' ?>">
 
         <?php
     }
@@ -99,21 +100,22 @@ class HTML {
         $HtmlName = $model->getTableName() . "[" . $name . "]"; 
         ?>
                 
-        <script src="/protect/theme/js/testupload.js"></script>
-        <input type="file" id="<?php echo $name;?>" name="<?php echo $name?>" />
-        <a id="dropzone">Drop files here</a>
-        <output id="list"></output>
+        <script src="/protect/theme/js/fileUpload.js"></script>
+        <input type="file" id="<?php echo $name;?>" name="<?php echo $HtmlName?>" />
+        <a id="zone"><span></span></a>      
         <script>
             // Check for the various File API support.
             if (window.File && window.FileReader && window.FileList && window.Blob) {
 
                 fileUploader({
-                    'dropZoneId': 'dropzone',
+                    'dropZoneId': 'zone',
                     'InputfilesId': '<?php echo $name;?>' 
                 });
                 fileUploader.upload();
             } else {
-                alert('The File APIs are not fully supported in this browser.');
+                d = document.getElementById('zone');
+                d.id ='';
+                //alert('The File APIs are not fully supported in this browser.');
             }
         </script>
         <?php

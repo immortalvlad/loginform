@@ -111,7 +111,6 @@ abstract class Model {
     /**
      * Insert record 
      * @param array $nameField name fieald in table
-     * @param array $values values to insert
      * @return int last inserted value
      */
     public function insert($nameField)

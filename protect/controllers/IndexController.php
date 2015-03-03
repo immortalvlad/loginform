@@ -30,25 +30,26 @@ class IndexController extends Controller {
 
     public function registerAction()
     {
+       
         $userModel = UserModel::model();
         $userModel->addRule('captcha', array(
                 'required' => true,
                 'type' => 'captcha',
                   ), 'Captcha');
-        
+
         $UserpictureModel = UserpictureModel::model();
-        
+
         $UserpictureModel->addRule('image', array(
-                'type'=>'image'
-        ),'Avatar');
-        
+                'type' => 'image'
+                  ), 'Avatar');
+
         $UseraddressModel = UseraddressModel::model();
-        $models = array($userModel,$UserpictureModel, $UseraddressModel);
+        $models = array($userModel, $UserpictureModel, $UseraddressModel);
         $form = new Form($models);
 
         if (InputRequest::IsPostRequest())
         {
-            Helper::PR($_FILES);
+//            Helper::PR($_FILES);
             if ($form->validate())
             {
                 try
@@ -60,7 +61,17 @@ class IndexController extends Controller {
                     if (isset($id))
                     {
                         $this->insertActivationKey($id);
-
+                        $this->uploadFile($id, $UserpictureModel, 'image');
+                        $country_id = InputRequest::getPost('country');
+                        $city_id = InputRequest::getPost('city');
+                        if ($country_id)
+                        {
+                            UseraddressModel::model()->insert(array(
+                                    "country_id" => $country_id,
+                                    "user_entity_id" => $id,
+                                    "city_id" => $city_id,
+                            ));
+                        }
                         DB::getInstance()->getConnection()->commit();
 
                         $this->sendActivationMail(InputRequest::getPostModel($userModel, 'email'));
@@ -124,6 +135,42 @@ class IndexController extends Controller {
         }
     }
 
+    /**
+     * 
+     * @param type $id
+     * @param Model $Model
+     * @param type $name
+     * @throws ExceptionFF
+     */
+    private function uploadFile($id, Model $Model, $name)
+    {
+        if (isset($_FILES[$Model->getTableName()]) && $_FILES[$Model->getTableName()]['error'][$name] == 0)
+        {
+            $tableName = $_FILES[$Model->getTableName()];
+            $extension = pathinfo($tableName['name'][$name], PATHINFO_EXTENSION);
+            $temp = $tableName['tmp_name'][$name];
+
+
+            $file = md5_file($temp) . time() . '.' . $extension;
+            $hash = Hash::md5make($id);
+            $dir = "uploads/{$hash}";
+            if (!is_dir($dir))
+            {
+                mkdir($dir);
+            }
+            if (move_uploaded_file($temp, $dir . "/" . $file) === true)
+            {
+                $Model->insert(array(
+                        "path" => $dir . "/" . $file,
+                        "user_entity_id" => $id,
+                ));
+            } else
+            {
+                throw new Exception("Can't load file");
+            }
+        }
+    }
+
     private function userInsert($userModel)
     {
         $salt = Hash::salt();
@@ -132,6 +179,7 @@ class IndexController extends Controller {
                 'email' => InputRequest::getPostModel($userModel, 'email'),
                 'username' => InputRequest::getPostModel($userModel, 'username'),
                 'password' => $password,
+                'telephone' => InputRequest::getPostModel($userModel, 'telephone'),
                 'date_added' => date("Y-m-d H:i:s"),
                 'status' => 0,
                 'first_name' => InputRequest::getPostModel($userModel, 'first_name'),

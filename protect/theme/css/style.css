@@ -75,7 +75,7 @@ input.error{
 }
 /**/
 /*DROPZONE*/
-#dropzone {
+#dropzone, #zone {
     display: table;
     width: 300px;
     height: 300px;
@@ -86,12 +86,12 @@ input.error{
     vertical-align: middle;
     text-decoration: none;
 }
-#dropzone:hover{
+#dropzone:hover, #zone:hover{
     cursor: pointer;
     border: 4px dashed rgb(55, 118, 189);
     color: rgb(68, 68, 68);
 }
-#dropzone span{
+#dropzone span, #zone span{
     vertical-align: middle;
     display: table-cell;
     line-height: 23px;

@@ -1,6 +1,6 @@
-<?php // echo $form->getName($userModel, 'username');          ?>
-<?php // echo $form->getError($userModel, 'username');          ?>
-<?php // echo $form->getName($UseraddressModel);          ?>
+<?php // echo $form->getName($userModel, 'username');              ?>
+<?php // echo $form->getError($userModel, 'username');              ?>
+<?php // echo $form->getName($UseraddressModel);              ?>
 <?php echo HTML::getFormErrors($form); ?>
 <form method="post" action="<?php echo $addactionPath ?>" name="register" enctype="multipart/form-data">
 
@@ -41,16 +41,19 @@
             <?php HTML::error($form, $userModel, 'last_name'); ?>
         </div>
 
+
         <div class="field">
             <label for="country">country:
                 <select name="country" id="country">
-                    <option value="">--</option>
+                    <option value="">--</option>                  
                     <?php foreach ($countries as $country): ?>
-                        <option value="<?php echo $country['Code'] ?>"><?php echo $country['Name'] ?></option>
-                    <?php endforeach; ?>
+                        <option value="<?php echo $country['Code'] ?>"             
+                                ><?php echo $country['Name'] ?></option>
+                            <?php endforeach; ?>
                 </select>
             </label>
         </div>
+
         <div class="field">
             <label for="city">city:
                 <select name="city" id="city">
@@ -67,7 +70,7 @@
 
         </div>
         <div class="field">
-            <?php HTML::inputText($form, $userModel, 'captcha'); ?>
+            <?php HTML::inputText($form, $userModel, 'captcha', 'captcha'); ?>
             <?php HTML::error($form, $userModel, 'captcha'); ?>
         </div>
     </fieldset>
