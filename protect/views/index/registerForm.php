@@ -86,4 +86,3 @@
 //    console.log(form.elements.country);
 
 </script>
-<?php echo Widget::langSwitcer(); ?>

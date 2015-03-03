@@ -31,6 +31,7 @@ class HTML {
         }
         ?>
         <input type="<?php echo $type ?>" 
+               placeholder="<?php //echo $form->getName($model, $name) ?>"
         <?php echo $errorClass; ?>
                name="<?php echo $model->getTableName() . "[" . $name . "]" ?>" 
                id="<?php echo $name . ucfirst($model->getTableName()) ?>" 
@@ -68,7 +69,7 @@ class HTML {
                             <li><?php echo $error; ?></li>
 
 
-                        <?php } ?><php
+                        <?php } ?>
                 </ul>
                 </div>
                 <?php
@@ -91,7 +92,7 @@ class HTML {
     {
         ?>       
         <iframe src="/captcha/" id="iframe" frameborder="0"  height="50px" width="110px" style="border: 0px;" scrolling="no" marginheight="5px" marginwidth="0px"></iframe>
-        <a class="" href="#" id="reloadCaptcha" onclick="captcha.reload()"><?php echo Translate::t('Get a new code'); ?></a>
+        <a class="" href="javascript:void(0)" id="reloadCaptcha" onclick="captcha.reload()"><?php echo Translate::t('Get a new code'); ?></a>
         <?php
     }
 

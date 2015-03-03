@@ -20,10 +20,18 @@ class Widget {
 
 //        Helper::PR($lang_arr);
         $result = "";
+        $curLang = Language::init()->getLang();
         foreach ($lang_arr["data"] as $lang => $langValue)
         {
-            $result .= " <a href='/" . $lang . "/" . $langValue['url'] . "'>" . $langValue["name"] . "</a> ";
+            if ($curLang == $lang)
+            {
+                $result .= " <span>" . $langValue["name"] . "</span> |";
+            } else
+            {
+                $result .= " <a href='/" . $lang . "/" . $langValue['url'] . "'>" . $langValue["name"] . "</a> |";
+            }
         }
+        $result = substr($result, 0, -1);
         return $result;
     }
 
