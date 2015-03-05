@@ -82,7 +82,7 @@ class Form {
                         $m = Translate::t("$1 is required", $table_rule_t);
                         $this->addError($m);
                         $this->addFieldError($table, $table_rule, $m);
-                    } else  if (!empty($value) || $rule_name=='type')
+                    } else if (!empty($value) || $rule_name == 'type')
                     {
                         switch ($rule_name)
                         {
@@ -134,6 +134,31 @@ class Form {
                                             $this->addFieldError($table, $table_rule, $m);
                                         }
                                         break;
+                                    case 'email':
+                                        if (!Filter::sanitize('ValidateEmail', InputRequest::getFormPost($table, $rule_value)))
+                                        {
+                                            $m = Translate::t("Incorect Email");
+                                            $this->addError($m);
+                                            $this->addFieldError($table, $table_rule, $m);
+                                        }
+                                        break;
+                                    case 'login':
+                                        if (!Filter::sanitize('ValidateLogin', $value) && $value)
+                                        {
+                                            $m = Translate::t("Incorect $1, use only letters or digits", $table_rule_t);
+                                            $this->addError($m);
+                                            $this->addFieldError($table, $table_rule, $m);
+                                        }
+                                        break;
+                                    case 'phone':
+                                        if (!Filter::sanitize('phone', $value) && $value)
+                                        {
+                                            $m = Translate::t("$1 incorrect", $table_rule_t);
+                                            $this->addError($m);
+                                            $this->addFieldError($table, $table_rule, $m);
+                                        }
+                                        break;
+
                                     case 'image':
                                         $allowed = Config::get('file_allowed');
                                         $maxSize = Config::get('file_max_size');
@@ -245,6 +270,11 @@ class Form {
         return $this->_fieldsErrors;
     }
 
+    public function getRules()
+    {
+        return $this->_rules;
+    }
+
     public function getFieldError($table = '', $field = '')
     {
         return isset($this->_fieldsErrors[$table][$field]) ? $this->_fieldsErrors[$table][$field] : false;
@@ -253,6 +283,33 @@ class Form {
     public function addFieldError($table, $field, $value)
     {
         $this->_fieldsErrors[$table][$field] = $value;
+    }
+
+    public function ToJson()
+    {
+        $res = "[";
+        foreach ($this->_rules as $table => $table_rules)
+        {
+            $res.="{\"{$table}\":[";
+            foreach ($table_rules as $table_rule => $rule_values)
+            {
+                $res.="{\"{$table_rule}\":[";
+                foreach ($rule_values as $rule_name => $rule_value)
+                {
+                    if (is_object($rule_value) || empty($rule_value) || $rule_value=="")
+                    {
+                        $rule_value = 'obj';
+                    }
+                    $res.="{\"{$rule_name}\":\"{$rule_value}\"},";
+                }
+                $res = substr($res, 0, -1);
+                $res.="]},";
+            }
+            $res = substr($res, 0, -1);
+            $res.="]},";
+        }
+        $res = substr($res, 0, -1);
+        return $res . "]";
     }
 
 }

@@ -46,7 +46,7 @@ class IndexController extends Controller {
         $UseraddressModel = UseraddressModel::model();
         $models = array($userModel, $UserpictureModel, $UseraddressModel);
         $form = new Form($models);
-
+       
         if (InputRequest::IsPostRequest())
         {
 //            Helper::PR($_FILES);

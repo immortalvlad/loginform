@@ -105,27 +105,38 @@ h1 {
 }
 
 /* line 34, ../sass/style.scss */
+pre {
+  text-align: left;
+  display: inherit;
+}
+
+/* line 38, ../sass/style.scss */
+footer {
+  margin-top: 100px;
+}
+
+/* line 41, ../sass/style.scss */
 h2 {
   font-size: 1.1rem;
 }
 
-/* line 37, ../sass/style.scss */
+/* line 44, ../sass/style.scss */
 .h1h {
   padding-bottom: 0.9rem;
 }
 
-/* line 40, ../sass/style.scss */
+/* line 47, ../sass/style.scss */
 .h2dec {
   padding-top: 4%;
 }
 
-/* line 43, ../sass/style.scss */
+/* line 50, ../sass/style.scss */
 .colors {
   width: 100%;
   height: 4px;
 }
 
-/* line 47, ../sass/style.scss */
+/* line 54, ../sass/style.scss */
 .form-wrapper {
   padding-top: 10%;
   border-radius: 2px;
@@ -133,24 +144,13 @@ h2 {
   position: relative;
   width: 375px;
 }
-/* line 53, ../sass/style.scss */
-.form-wrapper #rememberme {
-  margin-right: 7px;
-}
-
-/* line 58, ../sass/style.scss */
-form {
-  padding: 30px 20px 0;
-}
-
-/* line 62, ../sass/style.scss */
-.form-item {
+/* line 60, ../sass/style.scss */
+.form-wrapper .form-item {
   margin-bottom: 10px;
   width: 100%;
 }
-
-/* line 67, ../sass/style.scss */
-.form-item input {
+/* line 63, ../sass/style.scss */
+.form-wrapper .form-item input {
   border: 1px solid #ccc;
   border-radius: 2px;
   color: #000;
@@ -161,21 +161,82 @@ form {
   transition: background 0.3s ease-in-out;
   width: 100%;
 }
-
-/* line 79, ../sass/style.scss */
-.form-item input:focus {
+/* line 73, ../sass/style.scss */
+.form-wrapper .form-item input:focus {
   outline: none;
   border-color: #9ecaed;
   box-shadow: 0 0 10px #9ecaed;
 }
-
-/* line 86, ../sass/style.scss */
-.button-panel {
+/* line 79, ../sass/style.scss */
+.form-wrapper .form-item.captcha {
+  margin-top: 19px;
+  margin-bottom: 37px;
+}
+/* line 82, ../sass/style.scss */
+.form-wrapper .form-item.captcha iframe {
+  clear: both;
+}
+/* line 85, ../sass/style.scss */
+.form-wrapper .form-item.captcha a, .form-wrapper .form-item.captcha .upload span, .upload .form-wrapper .form-item.captcha span {
+  clear: both;
+  width: 100%;
+  overflow: hidden;
+  float: left;
+}
+/* line 93, ../sass/style.scss */
+.form-wrapper #rememberme {
+  margin-right: 7px;
+}
+/* line 96, ../sass/style.scss */
+.form-wrapper.registerForm {
+  padding-top: 28px;
+}
+/* line 100, ../sass/style.scss */
+.form-wrapper .file input {
+  display: none;
+}
+/* line 103, ../sass/style.scss */
+.form-wrapper .file #zone {
+  display: table;
+  width: 100%;
+  min-height: 172px;
+  max-height: 300px;
+  border: 4px dashed #aaa;
+  color: #aaa;
+  line-height: 280px;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+}
+/* line 115, ../sass/style.scss */
+.form-wrapper .file #zone:hover {
+  cursor: pointer;
+  border: 4px dashed #3776bd;
+  color: #444444;
+}
+/* line 120, ../sass/style.scss */
+.form-wrapper .file #zone span {
+  vertical-align: middle;
+  display: table-cell;
+  line-height: 23px;
+}
+/* line 124, ../sass/style.scss */
+.form-wrapper .file #zone span.uploadImg {
+  background: url(../img/MultipleFileUploadBig.png) no-repeat center center;
+}
+/* line 129, ../sass/style.scss */
+.form-wrapper .file .thumb {
+  max-height: 200px;
+  border: 1px solid #000;
+  margin: 10px 5px 0 0;
+}
+/* line 137, ../sass/style.scss */
+.form-wrapper .button-panel {
   margin: 20px 0 0;
   width: 100%;
 }
-/* line 90, ../sass/style.scss */
-.button-panel .button {
+/* line 141, ../sass/style.scss */
+.form-wrapper .button-panel .button {
   -webkit-appearance: none;
   background: #009dff;
   border: none;
@@ -191,13 +252,52 @@ form {
   transition: background 0.3s ease-in-out;
   width: 100%;
 }
-/* line 106, ../sass/style.scss */
-.button-panel .button:hover {
+/* line 157, ../sass/style.scss */
+.form-wrapper .button-panel .button:hover {
   background: #00c8ff;
 }
 
+/*DROPZONE*/
+/*
+#dropzone, #zone {
+    display: table;
+    width: 300px;
+    height: 300px;
+    border: 4px dashed #aaa;
+    color: #aaa;
+    line-height: 280px;
+    text-align: center; 
+    vertical-align: middle;
+    text-decoration: none;
+}
+#dropzone:hover, #zone:hover{
+    cursor: pointer;
+    border: 4px dashed rgb(55, 118, 189);
+    color: rgb(68, 68, 68);
+}
+#dropzone span, #zone span{
+    vertical-align: middle;
+    display: table-cell;
+    line-height: 23px;
+}
+#dropzone.dragover {
+    color: green;
+    border: 2px dashed #000;              
+
+}
+
+#dropzone.dragover {
+    color: green;
+    border: 4px dashed #000;
+}
+*/
+/* line 203, ../sass/style.scss */
+form {
+  padding: 30px 20px 0;
+}
+
 @media only screen and (max-width: 320px) {
-  /* line 117, ../sass/style.scss */
+  /* line 212, ../sass/style.scss */
   .form-wrapper {
     padding-top: 10%;
     border-radius: 2px;
@@ -206,13 +306,13 @@ form {
     width: 320px;
   }
 }
-/* line 127, ../sass/style.scss */
+/* line 222, ../sass/style.scss */
 .cent {
   text-align: center;
   color: #000;
 }
 
-/* line 132, ../sass/style.scss */
+/* line 227, ../sass/style.scss */
 .view {
   text-align: center;
   text-decoration: none;
@@ -220,7 +320,7 @@ form {
   padding-top: 10px;
 }
 
-/* line 139, ../sass/style.scss */
+/* line 234, ../sass/style.scss */
 #ref {
   text-align: center;
   text-decoration: underline;
@@ -229,7 +329,7 @@ form {
   font-size: 16px;
 }
 
-/* line 147, ../sass/style.scss */
+/* line 242, ../sass/style.scss */
 #ref:hover {
   text-align: center;
   color: #009dff;
@@ -239,36 +339,36 @@ form {
   font-size: 16px;
 }
 
-/* line 155, ../sass/style.scss */
+/* line 250, ../sass/style.scss */
 ul li {
   display: inline-block;
   list-style-type: none;
   text-align: center;
 }
 
-/* line 160, ../sass/style.scss */
+/* line 255, ../sass/style.scss */
 .h1h {
   color: #000;
   text-align: center;
 }
 
-/* line 164, ../sass/style.scss */
+/* line 259, ../sass/style.scss */
 .lil {
   display: inline-block;
 }
 
-/* line 168, ../sass/style.scss */
+/* line 263, ../sass/style.scss */
 .flashMessage {
   background-color: mintcream;
   border: 1px solid #ccffcc;
 }
 
-/* line 172, ../sass/style.scss */
+/* line 267, ../sass/style.scss */
 .errorMessage {
   color: #C00;
 }
 
-/* line 175, ../sass/style.scss */
+/* line 270, ../sass/style.scss */
 .errorSummary {
   border: 2px solid #C00;
   padding: 7px 7px 12px 7px;
@@ -276,77 +376,77 @@ ul li {
   background: #FEE;
   font-size: 0.9em;
 }
-/* line 181, ../sass/style.scss */
+/* line 276, ../sass/style.scss */
 .errorSummary p {
   margin: 0;
   padding: 5px;
   text-align: left;
   padding-left: 20px;
 }
-/* line 187, ../sass/style.scss */
+/* line 282, ../sass/style.scss */
 .errorSummary ul {
   margin: 0;
   padding: 5px 5px 5px 20px;
   list-style: disc inside;
 }
-/* line 191, ../sass/style.scss */
+/* line 286, ../sass/style.scss */
 .errorSummary ul li {
   display: list-item;
   list-style-type: inherit;
   text-align: left;
 }
 
-/* line 200, ../sass/style.scss */
+/* line 295, ../sass/style.scss */
 label {
   font-weight: bold;
 }
 
-/* line 203, ../sass/style.scss */
+/* line 298, ../sass/style.scss */
 label.error {
   color: #C00;
 }
 
-/* line 206, ../sass/style.scss */
+/* line 301, ../sass/style.scss */
 input.error {
   background-color: #FEE;
   border-color: #C00;
 }
 
 /**/
-/* line 213, ../sass/style.scss */
+/* line 308, ../sass/style.scss */
 .lang_switch a, .lang_switch .upload span, .upload .lang_switch span {
   text-decoration: none;
 }
-/* line 216, ../sass/style.scss */
+/* line 311, ../sass/style.scss */
 .lang_switch a:hover, .lang_switch .upload span:hover, .upload .lang_switch span:hover {
   text-decoration: underline;
 }
 
 /***/
-/* line 225, ../sass/style.scss */
+/* line 320, ../sass/style.scss */
 .upload {
   width: 500px;
   background: #f0f0f0;
   border: 1px solid #ddd;
   padding: 20px;
 }
-/* line 230, ../sass/style.scss */
+/* line 325, ../sass/style.scss */
 .upload fieldset {
   border: 0;
   padding: 0;
   margin-bottom: 10px;
 }
-/* line 234, ../sass/style.scss */
+/* line 329, ../sass/style.scss */
 .upload fieldset legend {
   font-size: 1.2em;
   margin-bottom: 10px;
 }
-/* line 240, ../sass/style.scss */
+/* line 335, ../sass/style.scss */
 .upload a, .upload span {
   display: block;
 }
 
-/* line 249, ../sass/style.scss */
+/* line 344, ../sass/style.scss */
 .bar {
   width: 100%;
   background: #eee;
@@ -357,7 +457,7 @@ input.error {
   box-sizing: border-box;
 }
 
-/* line 258, ../sass/style.scss */
+/* line 353, ../sass/style.scss */
 .bar-fill {
   height: 20px;
   display: block;
@@ -367,56 +467,10 @@ input.error {
   transition: width 0.8s ease;
 }
 
-/* line 267, ../sass/style.scss */
+/* line 362, ../sass/style.scss */
 .bar-fill-text {
   color: #fff;
   padding: 3px;
 }
 
 /**/
-/*DROPZONE*/
-/* line 273, ../sass/style.scss */
-#dropzone, #zone {
-  display: table;
-  width: 300px;
-  height: 300px;
-  border: 4px dashed #aaa;
-  color: #aaa;
-  line-height: 280px;
-  text-align: center;
-  vertical-align: middle;
-  text-decoration: none;
-}
-
-/* line 284, ../sass/style.scss */
-#dropzone:hover, #zone:hover {
-  cursor: pointer;
-  border: 4px dashed #3776bd;
-  color: #444444;
-}
-
-/* line 289, ../sass/style.scss */
-#dropzone span, #zone span {
-  vertical-align: middle;
-  display: table-cell;
-  line-height: 23px;
-}
-
-/* line 294, ../sass/style.scss */
-#dropzone.dragover {
-  color: green;
-  border: 2px dashed #000;
-}
-
-/* line 299, ../sass/style.scss */
-.thumb {
-  max-height: 200px;
-  border: 1px solid #000;
-  margin: 10px 5px 0 0;
-}
-
-/* line 304, ../sass/style.scss */
-#dropzone.dragover {
-  color: green;
-  border: 4px dashed #000;
-}

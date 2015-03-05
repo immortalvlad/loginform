@@ -26,6 +26,15 @@ class Filter {
                 // Remove all characters except letters, digits and !#$%&'*+-=?^_`{|}~@.[].
                 return filter_var($data, FILTER_SANITIZE_EMAIL);
                 break;
+            case 'ValidateEmail':
+                return filter_var($data, FILTER_VALIDATE_EMAIL);
+                break;
+             case 'ValidateLogin':
+                return preg_match('/^[A-Za-z0-9]{1,20}$/i', $data);
+                break;
+             case 'phone':
+                return preg_match('/^(\(\d{1,4}\)){0,1}([\+{0,1},\s{0,1}]{0,})([\d,\s]{0,}){0,}$/i', $data);
+                break;
             case 'url':
                 // Remove all characters except letters, digits and $-_.+!*'(),{}|\\^~[]`<>#%";/?:@&=.
                 return filter_var($data, FILTER_SANITIZE_URL);

@@ -1,5 +1,7 @@
 var captcha = function() {
+
     return this;
+    
 }();
 captcha.reload = function() {
     var f = document.getElementById('iframe');
@@ -48,7 +50,7 @@ window.onload = function() {
         code = test.value;
 //        console.log(test.value);
 
-        ajax.ajax('/index/getcities/id/' +code, function(data, xmlhttp) {
+        ajax.ajax('/index/getcities/id/' + code, function(data, xmlhttp) {
 //            console.log(data);
             var cities = JSON.parse(data);
 

@@ -15,7 +15,6 @@ class UserModel extends Model {
     private function __construct()
     {
         $this->mainModel();
-       
     }
 
     public function rules()
@@ -25,19 +24,21 @@ class UserModel extends Model {
                         "email" => array(
                                 'required' => true,
                                 'type' => 'email',
-                                'min' => 2,
-                                'max' => 20,
+                                'min' => 6,
+                                'max' => 50,
                                 'unique' => $this
                         ),
                         "username" => array(
                                 'required' => true,
-                                'min' => 2,
+                                'type' => 'login',
+                                'min' => 5,
                                 'max' => 20,
                                 'unique' => $this
                         ),
                         "telephone" => array(
+                                'type' => 'phone',
                                 'min' => 6,
-                                'max' => 10,
+                                'max' => 20,
                         ),
                         "password" => array(
                                 'required' => true,
@@ -45,7 +46,14 @@ class UserModel extends Model {
                         ),
                         "password_again" => array(
                                 'required' => true,
+                                'min' => 6,
                                 'matches' => 'password',
+                        ),
+                        "first_name" => array(
+                                'type' => 'login',
+                        ),
+                        "last_name" => array(
+                                'type' => 'login',
                         )
                 )
         );

@@ -20,12 +20,7 @@ class UseraddressModel extends Model {
     {
         return array(
                 $this->tableName => array(
-                        "country_id" => array(
-//                                'required' => true,
-                        ),
-                        "city_id" => array(
-//                                'required' => true,
-                        )
+                      
                 )
         );
     }

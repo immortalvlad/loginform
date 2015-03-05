@@ -7,7 +7,7 @@
  */
 class Translate {
 
-    public static function t($key, $replace_text=array())
+    public static function t($key, $replace_text = array())
     {
         $classCoreDir = APP_PATH . DS . 'protect';
         $lang = App::app()->getLanguage()->getLang();
@@ -42,6 +42,18 @@ class Translate {
         }
 
         return $text;
+    }
+
+    public static function ToJson()
+    {
+        $classCoreDir = APP_PATH . DS . 'protect';
+        $lang = App::app()->getLanguage()->getLang();
+        $langFile = $classCoreDir . DS . 'lang' . DS . $lang . '.php';
+        if (is_file($langFile))
+        {
+            $texts = require($langFile);
+            return json_encode($texts,JSON_UNESCAPED_UNICODE);
+        }
     }
 
     private static function getText($File, $key)

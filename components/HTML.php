@@ -24,13 +24,13 @@ class HTML {
     public static function inputText(Form $form, Model $model, $name, $type = 'text')
     {
       
-        $errorClass = '';
+        $errorClass = "";
         if ($form->getFieldError($model->getTableName(), $name))
         {
             $errorClass = 'class="error"';
         }
         ?>
-        <input type="<?php echo $type ?>" 
+        <input type="<?php echo $type=='captcha'? 'text' : $type ?>" 
                placeholder="<?php //echo $form->getName($model, $name) ?>"
         <?php echo $errorClass; ?>
                name="<?php echo $model->getTableName() . "[" . $name . "]" ?>" 
@@ -91,7 +91,7 @@ class HTML {
     public static function Captcha()
     {
         ?>       
-        <iframe src="/captcha/" id="iframe" frameborder="0"  height="50px" width="110px" style="border: 0px;" scrolling="no" marginheight="5px" marginwidth="0px"></iframe>
+        <iframe src="/captcha/" id="iframe" frameborder="0"  height="50px" width="130px" style="border: 0px;" scrolling="no" marginheight="5px" marginwidth="0px"></iframe>
         <a class="" href="javascript:void(0)" id="reloadCaptcha" onclick="captcha.reload()"><?php echo Translate::t('Get a new code'); ?></a>
         <?php
     }
@@ -103,7 +103,7 @@ class HTML {
                 
         <script src="/protect/theme/js/fileUpload.js"></script>
         <input type="file" id="<?php echo $name;?>" name="<?php echo $HtmlName?>" />
-        <a id="zone"><span></span></a>      
+        <a id="zone"><span class="uploadImg"></span></a>      
         <script>
             // Check for the various File API support.
             if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -116,7 +116,6 @@ class HTML {
             } else {
                 d = document.getElementById('zone');
                 d.id ='';
-                //alert('The File APIs are not fully supported in this browser.');
             }
         </script>
         <?php

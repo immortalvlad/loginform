@@ -2,20 +2,25 @@ var fileUploader = fileUploader || function(options) {
     o = options;
     o.AllowedfileTypes = ['jpg', 'png', 'gif', 'jpeg'];
     o.maxFileSize = 10000000;
-    o.dropZoneId = document.getElementById(o.dropZoneId);
-    o.InputfilesId = document.getElementById(o.InputfilesId);
+    o.err = [];
+    fileUploader.dropZoneId = document.getElementById(o.dropZoneId);
+    fileUploader.InputfilesId = document.getElementById(o.InputfilesId);
     o.transFile = '';
 };
 
 
-
+        
 (function(FU) {
     FU.upload = function() {
-        o.InputfilesId.addEventListener('change', FU.fileSelect, false);
-        o.dropZoneId.addEventListener('click', FU.handleClick, false);
+        FU.InputfilesId.addEventListener('change', FU.fileSelect, false);
+        FU.dropZoneId.addEventListener('click', FU.handleClick, false);
+    }
+    FU.getError = function() {
+        return FU.err;
     }
 
     FU.fileSelect = function(e) {
+
         e.stopPropagation();
         e.preventDefault();
         this.className = '';
@@ -33,7 +38,8 @@ var fileUploader = fileUploader || function(options) {
         file = files[0];
 //        console.log(file);
 //        console.log(file);
-        err = FU.validate(file);
+        FU.err = FU.validate(file);
+//        console.log(err);
 //        console.log(err.length);
         var reader = new FileReader();
         // files is a FileList of File objects. List some properties.
@@ -42,7 +48,7 @@ var fileUploader = fileUploader || function(options) {
         reader.onload = (function(theFile) {
             return function(e) {
                 // Render thumbnail.
-                lists = o.dropZoneId;
+                lists = FU.dropZoneId;
                 lists.innerHTML = '';
                 spanList = lists.querySelectorAll('span');
 //                            console.log(spanList);
@@ -53,7 +59,7 @@ var fileUploader = fileUploader || function(options) {
                 var span = document.createElement('span');
                 span.innerHTML = ['<img class="thumb" src="', e.target.result,
                     '" title="', escape(theFile.name), '"/>'].join('');
-                o.dropZoneId.insertBefore(span, null);
+                FU.dropZoneId.insertBefore(span, null);
             };
         })(file);
 
@@ -89,7 +95,10 @@ var fileUploader = fileUploader || function(options) {
     }
     FU.handleClick = function(e) {
         e.preventDefault();
-        o.InputfilesId.click();
+//        document.getElementById(o.InputfilesId);
+
+//        console.log(fileUploader.in);
+        FU.InputfilesId.click();
     }
 
 })(fileUploader);
