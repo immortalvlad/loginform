@@ -15,8 +15,13 @@ class UserController extends Controller {
         }
         $userData = AuthState::init()->getData();
         $usermodel = UserModel::model();
+//        Helper::PR($usermodel->);
+        $UserpictureModel = UserpictureModel::model()->find('user_entity_id',$userData[$usermodel->getPK()]);
+//        Helper::PR($UserpictureModel);
+        $this->view->UserpictureModel = $UserpictureModel[0];
         $this->view->usermodel = $usermodel;
-        $this->view->userdata = $userData;
+        $this->view->userdata = $usermodel->selectById($userData[$usermodel->getPK()])[0];
+//        Helper::PR($this->view->userdata);
 
         $this->view->render('index/userProfile');
     }
@@ -57,7 +62,6 @@ class UserController extends Controller {
                 $inputPassword = InputRequest::getPostModel($userModel, 'password');
                 if ($user['password'] !== Hash::make($inputPassword, $user['salt']))
                 {
-                    ;
                     $form->addError(Translate::t('new password does not match with the current password'));
                 } else
                 {

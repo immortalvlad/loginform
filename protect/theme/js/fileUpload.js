@@ -1,6 +1,6 @@
 var fileUploader = fileUploader || function(options) {
     o = options;
-    o.AllowedfileTypes = ['jpg', 'png', 'gif', 'jpeg'];
+    fileUploader.AllowedfileTypes = ['jpg', 'png', 'gif', 'jpeg'];
     o.maxFileSize = 10000000;
     o.err = [];
     fileUploader.dropZoneId = document.getElementById(o.dropZoneId);
@@ -33,7 +33,10 @@ var fileUploader = fileUploader || function(options) {
         }
 
         file = files[0];
+        FU.err = "";
+       
         FU.err = FU.validate(file);
+       
         var reader = new FileReader();
         // files is a FileList of File objects. List some properties.
 
@@ -65,10 +68,10 @@ var fileUploader = fileUploader || function(options) {
             err.push(m);
         }
         s = file.type.split('/');
-        if (!file.type.match('image.*') || !in_array(s[1], o.AllowedfileTypes)) {
+        if (!file.type.match('image.*') && !in_array(s[1], fileUploader.AllowedfileTypes)) {
             var str = '';
-            for (allowtype in o.AllowedfileTypes) {
-                str += o.AllowedfileTypes[allowtype] + " ";
+            for (allowtype in fileUploader.AllowedfileTypes) {
+                str += fileUploader.AllowedfileTypes[allowtype] + " ";
             }
             var m = t("The file cannot be uploaded. Only files with these extensions are allowed: $1.", [str]);
             err.push(m);

@@ -73,8 +73,7 @@ class UserModel extends Model {
                         'status' => App::app()->t("status"),
                         'first_name' => App::app()->t("first_name"),
                         'last_name' => App::app()->t("last_name"),
-                        'salt' => App::app()->t("salt"),
-                        'loged_id' => App::app()->t("loged_id"),
+                        'salt' => App::app()->t("salt"),                       
                 )
         );
     }

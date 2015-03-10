@@ -7,7 +7,6 @@
     <ul class="list">
         <li ><a class="l1" href="<?php echo $logoutpage; ?>"><?php echo Translate::t('log out');?></a></li>
         <li ><a class="l2" href="<?php echo $userpfrofilepage ?>"><?php echo Translate::t('View profile');?></a></li>
-        <li ><a class="l3" href="<?php echo $updatepage ?>"><?php echo Translate::t('Update details');?></a></li>
         <li ><a class="l3" href="<?php echo $changepasswordpage; ?>"><?php echo Translate::t('Change password');?></a></li>
     </ul>
 </div>

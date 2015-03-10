@@ -1,5 +1,5 @@
+<?php echo Translate::t('Recover password');?>
 
-Recover password
 <?php echo HTML::getFormErrors($form); ?>
 <form method="post" action="<?php echo $addactionPath ?>">
     <fieldset>

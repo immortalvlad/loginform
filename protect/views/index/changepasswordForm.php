@@ -25,7 +25,7 @@
        </div>  
     </form>
     <br>
-    <a href="/" class="back"><?php echo Translate::t('Back');?></a>
+    <a href="<?php echo $backpage ?>" class="back"><?php echo Translate::t('Back');?></a>
  
 </div>
 <script src="/protect/theme/js/validator.js"></script>

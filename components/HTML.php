@@ -106,7 +106,7 @@ class HTML {
         <a id="zone"><span class="uploadImg"></span></a>      
         <script>
             // Check for the various File API support.
-            if (window.File && window.FileReader && window.FileList && window.Blob) {
+            if (window.File && window.FileReader) {
 
                 fileUploader({
                     'dropZoneId': 'zone',

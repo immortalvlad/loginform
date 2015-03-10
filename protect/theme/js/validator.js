@@ -1,189 +1,3 @@
-var GLOBALNAMEPROP;
-var Node = function(name) {
-    this.children = [];
-    GLOBALNAMEPROP = name;
-    this.create = function(clsName, val, tName) {
-        className = "new " + clsName + "()";
-        classObj = eval(className);
-        classObj.val = val;
-        classObj.tName = tName;
-        this.children.push(classObj);
-    }
-}
-
-Node.prototype = {
-    add: function(type, val, tName) {
-        if (type == 'type' || type == 'unique' || type == 'matches') {
-            if (val == 'obj' || type == 'matches' || val == 'captcha') {
-                return false;
-            }
-            this.create(val, val, tName);
-        } else {
-            this.create(type, val, tName);
-        }
-    },
-    validate: function() {
-        var length = this.children.length;
-        for (var child in this.children) {
-            validObj = this.children[child].validate();
-        }
-    },
-    remove: function(child) {
-        var length = this.children.length;
-        for (var i = 0; i < length; i++) {
-            if (this.children[i] === child) {
-                this.children.splice(i, 1);
-                return;
-            }
-        }
-    },
-    getChild: function(i) {
-        return this.children[i];
-    },
-    hasChildren: function() {
-        return this.children.length > 0;
-    },
-    getChilds: function() {
-        return this.children;
-    }
-}
-
-var required = function() {
-    this.val;
-    this.tName;
-    return {
-        validate: function() {
-            var m = t("$1 cannot be blank.", [this.tName]);
-            if (GLOBALNAMEPROP.Inputvalue == '') {
-                GLOBALNAMEPROP.hasError = true;
-                GLOBALNAMEPROP.addError(m);
-            } else {
-                GLOBALNAMEPROP.hasError = false;
-                GLOBALNAMEPROP.delError(m);
-            }
-        }
-    };
-}
-
-var min = function() {
-    this.val;
-    this.tName;
-    return {
-        validate: function() {
-            var m = t("$1 is too short (minimum is $2 characters).", [this.tName, this.val]);
-            if (GLOBALNAMEPROP.Inputvalue.length < parseInt(this.val)
-                    && GLOBALNAMEPROP.Inputvalue != "") {
-                GLOBALNAMEPROP.hasError = true;
-                GLOBALNAMEPROP.addError(m);
-            } else {
-                if (!GLOBALNAMEPROP.hasError) {
-                    GLOBALNAMEPROP.delError(m);
-                    GLOBALNAMEPROP.hasError = false;
-                }
-            }
-        }
-    };
-}
-var max = function() {
-    this.val;
-    this.tName;
-    return {
-        validate: function() {
-            var m = t("$1 is too long (maximum is $2 characters).", [this.tName, this.val]);
-            if (GLOBALNAMEPROP.Inputvalue.length > parseInt(this.val)
-                    && GLOBALNAMEPROP.Inputvalue != "") {
-                GLOBALNAMEPROP.hasError = true;
-                GLOBALNAMEPROP.addError(m);
-            } else {
-                if (!GLOBALNAMEPROP.hasError) {
-                    GLOBALNAMEPROP.delError(m);
-                    GLOBALNAMEPROP.hasError = false;
-                }
-            }
-        }
-    };
-}
-var email = function() {
-    this.val;
-    this.tName;
-    return {
-        validate: function() {
-            var m = t("Field $1 is not a valid email address.", [this.tName]);
-            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-            if (!re.test(GLOBALNAMEPROP.Inputvalue)) {
-                GLOBALNAMEPROP.hasError = true;
-                GLOBALNAMEPROP.addError(m);
-            } else {
-                if (!GLOBALNAMEPROP.hasError) {
-                    GLOBALNAMEPROP.delError(m);
-                    GLOBALNAMEPROP.hasError = false;
-                }
-            }
-        }
-    };
-}
-var login = function() {
-    this.val;
-    this.tName;
-    return {
-        validate: function() {
-            var m = t("The format of $1 is invalid.", [this.tName]);
-            var re = /^[A-Za-z0-9]{1,20}$/;
-            if (!re.test(GLOBALNAMEPROP.Inputvalue) &&
-                    GLOBALNAMEPROP.Inputvalue != "") {
-                GLOBALNAMEPROP.hasError = true;
-                GLOBALNAMEPROP.addError(m);
-            } else {
-                if (!GLOBALNAMEPROP.hasError) {
-                    GLOBALNAMEPROP.delError(m);
-                    GLOBALNAMEPROP.hasError = false;
-                }
-            }
-        }
-    };
-}
-var phone = function() {
-    this.val;
-    this.tName;
-    return {
-        validate: function() {
-
-            var m = t("The format of $1 is invalid.", [this.tName]);
-            var re = /^(\(\d{1,4}\)){0,1}([\+{0,1},\s{0,1}]{0,})([\d,\s]{0,}){0,}$/;
-            if (!re.test(GLOBALNAMEPROP.Inputvalue)) {
-                GLOBALNAMEPROP.hasError = true;
-                GLOBALNAMEPROP.addError(m);
-            } else {
-                if (!GLOBALNAMEPROP.hasError) {
-                    GLOBALNAMEPROP.delError(m);
-                    GLOBALNAMEPROP.hasError = false;
-                }
-            }
-        }
-    };
-}
-var image = function() {
-    this.val;
-    this.tName;
-    return {
-        validate: function() {
-            var d = fileUploader.getError();
-            var mess = '';
-            for (err in d) {
-                mess += d[err] + "\n";
-            }
-            if (mess) {
-                alert(mess);
-
-            }
-        }
-    };
-}
-
-
-
-
 var Validator = {};
 
 (function(v) {
@@ -408,3 +222,188 @@ var Validator = {};
         return text;
     }
 })(Validator);
+
+var GLOBALNAMEPROP;
+var Node = function(name) {
+    this.children = [];
+    GLOBALNAMEPROP = name;
+    this.create = function(clsName, val, tName) {
+        className = "new " + clsName + "()";
+        classObj = eval(className);
+        classObj.val = val;
+        classObj.tName = tName;
+        this.children.push(classObj);
+    }
+}
+
+Node.prototype = {
+    add: function(type, val, tName) {
+        if (type == 'type' || type == 'unique' || type == 'matches') {
+            if (val == 'obj' || type == 'matches' || val == 'captcha') {
+                return false;
+            }
+            this.create(val, val, tName);
+        } else {
+            this.create(type, val, tName);
+        }
+    },
+    validate: function() {
+        var length = this.children.length;
+        for (var child in this.children) {
+            validObj = this.children[child].validate();
+        }
+    },
+    remove: function(child) {
+        var length = this.children.length;
+        for (var i = 0; i < length; i++) {
+            if (this.children[i] === child) {
+                this.children.splice(i, 1);
+                return;
+            }
+        }
+    },
+    getChild: function(i) {
+        return this.children[i];
+    },
+    hasChildren: function() {
+        return this.children.length > 0;
+    },
+    getChilds: function() {
+        return this.children;
+    }
+}
+
+var required = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var m = t("$1 cannot be blank.", [this.tName]);
+            if (GLOBALNAMEPROP.Inputvalue == '') {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                GLOBALNAMEPROP.hasError = false;
+                GLOBALNAMEPROP.delError(m);
+            }
+        }
+    };
+}
+
+var min = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var m = t("$1 is too short (minimum is $2 characters).", [this.tName, this.val]);
+            if (GLOBALNAMEPROP.Inputvalue.length < parseInt(this.val)
+                    && GLOBALNAMEPROP.Inputvalue != "") {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                if (!GLOBALNAMEPROP.hasError) {
+                    GLOBALNAMEPROP.delError(m);
+                    GLOBALNAMEPROP.hasError = false;
+                }
+            }
+        }
+    };
+}
+var max = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var m = t("$1 is too long (maximum is $2 characters).", [this.tName, this.val]);
+            if (GLOBALNAMEPROP.Inputvalue.length > parseInt(this.val)
+                    && GLOBALNAMEPROP.Inputvalue != "") {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                if (!GLOBALNAMEPROP.hasError) {
+                    GLOBALNAMEPROP.delError(m);
+                    GLOBALNAMEPROP.hasError = false;
+                }
+            }
+        }
+    };
+}
+var email = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var m = t("Field $1 is not a valid email address.", [this.tName]);
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+            if (!re.test(GLOBALNAMEPROP.Inputvalue)) {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                if (!GLOBALNAMEPROP.hasError) {
+                    GLOBALNAMEPROP.delError(m);
+                    GLOBALNAMEPROP.hasError = false;
+                }
+            }
+        }
+    };
+}
+var login = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var m = t("The format of $1 is invalid.", [this.tName]);
+            var re = /^[A-Za-z0-9]{1,20}$/;
+            if (!re.test(GLOBALNAMEPROP.Inputvalue) &&
+                    GLOBALNAMEPROP.Inputvalue != "") {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                if (!GLOBALNAMEPROP.hasError) {
+                    GLOBALNAMEPROP.delError(m);
+                    GLOBALNAMEPROP.hasError = false;
+                }
+            }
+        }
+    };
+}
+var phone = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+
+            var m = t("The format of $1 is invalid.", [this.tName]);
+            var re = /^(\(\d{1,4}\)){0,1}([\+{0,1},\s{0,1}]{0,})([\d,\s]{0,}){0,}$/;
+            if (!re.test(GLOBALNAMEPROP.Inputvalue)) {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                if (!GLOBALNAMEPROP.hasError) {
+                    GLOBALNAMEPROP.delError(m);
+                    GLOBALNAMEPROP.hasError = false;
+                }
+            }
+        }
+    };
+}
+var image = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var d = fileUploader.getError();
+            var mess = '';
+            for (err in d) {
+                mess += d[err] + "\n";
+            }
+            if (mess) {
+                alert(mess);
+
+            }
+        }
+    };
+}
+
+

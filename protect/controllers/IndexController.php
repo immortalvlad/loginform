@@ -72,6 +72,8 @@ class IndexController extends Controller {
                         DB::getInstance()->getConnection()->commit();
 
                         $this->sendActivationMail(InputRequest::getPostModel($userModel, 'email'));
+                        Message::show('update', Translate::t('Thanks for register'));
+                        $this->redirect("index");
                     } else
                     {
                         DB::getInstance()->getConnection()->rollBack();

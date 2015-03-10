@@ -258,6 +258,17 @@ h2{
 }
 .profile{
     padding-top: 5%;
+    img.img{
+        max-width: 100%;
+        width: 100%;
+    }
+    .activated{
+        color: rgb(140, 210, 140);
+        font-weight: 600;
+    }
+    .notactivated{
+        color: red;
+    }
 }
 
 
@@ -358,8 +369,12 @@ ul li{
 }
 
 .flashMessage {
-    background-color: mintcream;
-    border: 1px solid #ccffcc;
+    background-color: rgb(221, 255, 210);
+    border: 2px solid #ccffcc;
+    color: rgb(25, 73, 40);
+    padding: 9px 7px;
+    position: relative;
+    top: -80px;
 }    
 .errorMessage{
     color: #C00;
@@ -410,7 +425,9 @@ input.error{
         }
     }
     span{
-
+        color: rgb(0, 0, 0);
+        background-color: whitesmoke;
+        padding: 4px 9px;
     }
 }
 /***/
@@ -465,6 +482,6 @@ a.back{
     font-size: 20px; 
     text-decoration: none;
     &:hover{
-       color: rgb(31, 4, 4);
+        color: rgb(31, 4, 4);
     }
 }
