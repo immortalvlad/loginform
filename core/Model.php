@@ -37,6 +37,11 @@ abstract class Model {
         unset($this->rules[$this->tableName][$field][$rule]);
     }
 
+    public function delRule($field)
+    {
+        unset($this->rules[$this->tableName][$field]);
+    }
+
     public function addRule($field, $values, $description = '')
     {
         $this->rules[$this->tableName][$field] = $values;
@@ -98,7 +103,7 @@ abstract class Model {
     {
         if (!empty($fields))
         {
-           $fields =  implode(', ', $fields);
+            $fields = implode(', ', $fields);
         } else
         {
             $fields = '*';

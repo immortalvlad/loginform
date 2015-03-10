@@ -79,7 +79,7 @@ class Form {
                     if ($rule_name == "required" && empty($value))
                     {
 
-                        $m = Translate::t("$1 is required", $table_rule_t);
+                        $m = Translate::t("$1 cannot be blank.", $table_rule_t);
                         $this->addError($m);
                         $this->addFieldError($table, $table_rule, $m);
                     } else if (!empty($value) || $rule_name == 'type')
@@ -89,7 +89,7 @@ class Form {
                             case 'min':
                                 if (strlen($value) < $rule_value)
                                 {
-                                    $m = Translate::t("$1 must be a minimum of $2 characters", array($table_rule_t, $rule_value));
+                                    $m = Translate::t("$1 is too short (minimum is $2 characters).", array($table_rule_t, $rule_value));
                                     $this->addError($m);
                                     $this->addFieldError($table, $table_rule, $m);
                                 }
@@ -97,7 +97,7 @@ class Form {
                             case 'max':
                                 if (strlen($value) > $rule_value)
                                 {
-                                    $m = Translate::t("$1 must be a maximum of $2 characters", array($table_rule_t, $rule_value));
+                                    $m = Translate::t("$1 is too long (maximum is $2 characters).", array($table_rule_t, $rule_value));
                                     $this->addError($m);
                                     $this->addFieldError($table, $table_rule, $m);
                                 }
@@ -105,7 +105,7 @@ class Form {
                             case 'matches':
                                 if ($value != InputRequest::getFormPost($table, $rule_value))
                                 {
-                                    $m = Translate::t("$1 must match $2", array($rule_value, $table_rule_t));
+                                    $m = Translate::t("$1 must be $2.", array($rule_value, $table_rule_t));
                                     $this->addError($m);
                                     $this->addFieldError($table, $table_rule, $m);
                                 }
@@ -137,7 +137,7 @@ class Form {
                                     case 'email':
                                         if (!Filter::sanitize('ValidateEmail', InputRequest::getFormPost($table, $rule_value)))
                                         {
-                                            $m = Translate::t("Incorect Email");
+                                            $m = Translate::t("Field $1 is not a valid email address.", $table_rule_t);
                                             $this->addError($m);
                                             $this->addFieldError($table, $table_rule, $m);
                                         }
@@ -153,7 +153,7 @@ class Form {
                                     case 'phone':
                                         if (!Filter::sanitize('phone', $value) && $value)
                                         {
-                                            $m = Translate::t("$1 incorrect", $table_rule_t);
+                                            $m = Translate::t("The format of $1 is invalid.", $table_rule_t);
                                             $this->addError($m);
                                             $this->addFieldError($table, $table_rule, $m);
                                         }
@@ -168,8 +168,9 @@ class Form {
                                             continue;
                                         }
                                         if (is_array($_FILES[$table]['error'][$table_rule]))
-                                        {
-                                            $m = Translate::t("Allow load only one picture");
+                                        {                                           
+                                            $str = implode(', ', $allowed);
+                                            $m = Translate::t("The file cannot be uploaded. Only files with these extensions are allowed: $1.", $str);
                                             $this->addError($m);
                                             $this->addFieldError($table, $table_rule, $m);
                                             continue;
@@ -179,14 +180,16 @@ class Form {
                                             $extension = pathinfo($_FILES[$table]['name'][$table_rule], PATHINFO_EXTENSION);
 
                                             if (!in_array(strtolower($extension), $allowed))
-                                            {
-                                                $m = Translate::t("Not Allowed file extension");
+                                            {                                             
+                                                $str = implode(', ', $allowed);
+                                                $m = Translate::t("The file cannot be uploaded. Only files with these extensions are allowed: $1.", $str);
+                                                $this->addError($m);
                                                 $this->addError($m);
                                                 $this->addFieldError($table, $table_rule, $m);
                                             }
                                             if ($_FILES[$table]['size'][$table_rule] > $maxSize)
                                             {
-                                                $m = Translate::t("File is to big");
+                                                $m = Translate::t("The file is too large. Its size cannot exceed $1 bytes.",$maxSize);
                                                 $this->addError($m);
                                                 $this->addFieldError($table, $table_rule, $m);
                                             }
@@ -296,7 +299,7 @@ class Form {
                 $res.="{\"{$table_rule}\":[";
                 foreach ($rule_values as $rule_name => $rule_value)
                 {
-                    if (is_object($rule_value) || empty($rule_value) || $rule_value=="")
+                    if (is_object($rule_value) || empty($rule_value) || $rule_value == "")
                     {
                         $rule_value = 'obj';
                     }

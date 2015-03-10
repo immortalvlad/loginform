@@ -158,10 +158,107 @@ h2{
                 background: #00c8ff;
             }
         }
+        a.button{
+            display: block;
+            line-height: 48px;
+            text-decoration: none
+        }
+        .separator{
+            margin: 10px 0px;
+        }
+    }
+    .welcome{
+        font-size:30px;
+        p{
+            a{
+                text-decoration: none;
+                color: rgb(143, 148, 181);
+                font-weight: 600;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+        }
+
+    }
+    ul.list{
+        list-style: disc;
+        margin-top: 42px;
+        font-size: 21px;
+        line-height: 29px;
+        li{
+            display: inherit;
+            margin-bottom: 17px;
+            line-height: 47px;
+            a{
+                text-decoration: none;
+                &:hover{
+                    text-decoration: underline;
+                }    
+            }
+
+        }
+        .l1{
+            -webkit-appearance: none;
+            display: block;
+            background: #9DA4F0;
+            border: none;
+            border-radius: 2px;
+            color: #fff;
+            cursor: pointer;
+            height: 50px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1.2em;
+            letter-spacing: 0.05em;
+            text-align: center;
+            text-transform: uppercase;
+            transition: background 0.3s ease-in-out;
+            width: 100%;
+            text-decoration: none;
+            &:hover{
+                text-decoration: none;
+                background: #C25A5A;
+            }
+        }
+        .l2{
+            @extend .l1;
+            background: #8F94B5;
+        }
+        .l3{
+            @extend .l1;
+            background: #5D6288;
+        }
+    }
+    table{
+        width:100%;
+        font-size: 15px;
+        margin-top: 28px;
+        tr{
+            border-bottom: 1px solid rgb(229, 220, 220);
+            td{
+                width: 50%;
+                text-align: left;
+                padding: 8px 0px 8px 9px;
+                &:first-child{
+                    padding-right: 9px;
+                    text-align: right;
+                    font-weight: 600;
+                }
+            }
+            &:first-child{
+                border-top: 1px solid rgb(229, 220, 220);
+            }
+            &:last-child{
+                border-bottom: none;
+            }
+        }
     }
 
-}
 
+}
+.profile{
+    padding-top: 5%;
+}
 
 
 
@@ -364,3 +461,10 @@ input.error{
     padding: 3px;
 }
 /**/
+a.back{
+    font-size: 20px; 
+    text-decoration: none;
+    &:hover{
+       color: rgb(31, 4, 4);
+    }
+}

@@ -1,8 +1,8 @@
 
 <div class="form-wrapper  registerForm">
-    <h1 class="h1h">Regster Form</h1>
+    <h1 class="h1h"><?php echo Translate::t('Regster Form');?></h1>
     <?php echo HTML::getFormErrors($form); ?>
-    <form method="post" action="<?php echo $addactionPath ?>" name="register" enctype="multipart/form-data">
+    <form method="post" action="<?php echo $addactionPath ?>" id="form" name="register" enctype="multipart/form-data">
         <div class="form-item">
             <?php HTML::label($form, $userModel, 'username'); ?>
             <?php HTML::inputText($form, $userModel, 'username'); ?>
@@ -41,7 +41,7 @@
 
 
         <div class="form-item">
-            <label for="country">country:<br>
+            <label for="country"><?php echo Translate::t('country');?>:<br>
                 <select name="country" id="country">
                     <option value="">--</option>                  
                     <?php foreach ($countries as $country): ?>
@@ -53,7 +53,7 @@
         </div>
 
         <div class="form-item">
-            <label for="city">city:<br>
+            <label for="city"><?php echo Translate::t('city');?>:<br>
                 <select name="city" id="city">
                     <option value="">--</option>
                 </select>
@@ -73,7 +73,7 @@
             <?php HTML::error($form, $userModel, 'captcha'); ?>
         </div>
         <div class="button-panel">
-            <input value="Register" type="submit" class="button"/>
+            <input value="<?php echo Translate::t('Register');?>" type="submit" class="button"/>
             <input type="hidden" name="<?php echo $form->tokenName; ?>" value="<?php echo $form->generateToken(); ?>">
 
         </div>
@@ -88,5 +88,5 @@ $translate = Translate::ToJson();
 <script>
     var j = <?php echo $j; ?> ;
     var LangText = <?php echo $translate; ?>;
-    Validator.init();
+    //Validator.init();
 </script>

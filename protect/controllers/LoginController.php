@@ -13,17 +13,16 @@ class LoginController extends Controller {
         {
             $this->redirect("index/index");
         }
-
+        
         $userModel = UserModel::model();
         $UseraddressModel = UseraddressModel::model();
-
         $userModel->unsetRule('username', 'unique');
-        $userModel->unsetRule('email', 'required');
+        $userModel->delRule('email');
         $userModel->unsetRule('password_again', 'required');
         $models = array($userModel, $UseraddressModel);
 
         $form = new Form($models);
-
+         
         if (InputRequest::IsPostRequest())
         {
             if ($form->validate())
@@ -43,8 +42,8 @@ class LoginController extends Controller {
                         DB::getInstance()->getConnection()->commit();
                         $this->redirect("index");
                     } else
-                    {
-                        $form->addError("User or password incorect");
+                    {                           
+                        $form->addError(Translate::t("User or password incorrect"));
                         DB::getInstance()->getConnection()->rollBack();
                     }
                 } catch (Exception $ex)

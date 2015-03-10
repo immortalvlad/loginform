@@ -1,7 +1,7 @@
 var captcha = function() {
 
     return this;
-    
+
 }();
 captcha.reload = function() {
     var f = document.getElementById('iframe');
@@ -39,37 +39,31 @@ window.onload = function() {
 //        city.remove(1);
 //        city.remove(0);
 //        city.remove();
+    if (test) {
 
-
-    addEvent(test, 'change', function() {
-        for (var di = city.length; di >= 0; di--) {
+        test.addEventListener('change', function() {
+            for (var di = city.length; di >= 0; di--) {
 //            console.log(di);
-            city.remove(di);
-        }
-
-        code = test.value;
-//        console.log(test.value);
-
-        ajax.ajax('/index/getcities/id/' + code, function(data, xmlhttp) {
-//            console.log(data);
-            var cities = JSON.parse(data);
-
-            for (i = 0; i < cities.length; i++) {
-                var option = document.createElement("option");
-                option.text = cities[i].Name;
-                option.value = cities[i].ID;
-                city.add(option);
+                city.remove(di);
             }
 
-        })
-    });
-    function addEvent(elem, type, handler) {
-        if (elem.addEventListener) {
-            elem.addEventListener(type, handler, false)
-        }
-        else {
-            elem.attachEvent("on" + type, handler)
-        }
+            code = test.value;
+//        console.log(test.value);
+
+            ajax.ajax('/index/getcities/id/' + code, function(data, xmlhttp) {
+//            console.log(data);
+                var cities = JSON.parse(data);
+
+                for (i = 0; i < cities.length; i++) {
+                    var option = document.createElement("option");
+                    option.text = cities[i].Name;
+                    option.value = cities[i].ID;
+                    city.add(option);
+                }
+
+            })
+        }, false);
+
     }
 
 };

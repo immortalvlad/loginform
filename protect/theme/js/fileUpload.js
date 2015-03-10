@@ -9,7 +9,7 @@ var fileUploader = fileUploader || function(options) {
 };
 
 
-        
+
 (function(FU) {
     FU.upload = function() {
         FU.InputfilesId.addEventListener('change', FU.fileSelect, false);
@@ -20,7 +20,6 @@ var fileUploader = fileUploader || function(options) {
     }
 
     FU.fileSelect = function(e) {
-
         e.stopPropagation();
         e.preventDefault();
         this.className = '';
@@ -31,16 +30,10 @@ var fileUploader = fileUploader || function(options) {
         if (e.type == 'drop') {
             var files = e.dataTransfer.files; // FileList object.
         } else {
-            console.log('Error');
         }
-//        console.log(o.InputfilesId.value);
 
         file = files[0];
-//        console.log(file);
-//        console.log(file);
         FU.err = FU.validate(file);
-//        console.log(err);
-//        console.log(err.length);
         var reader = new FileReader();
         // files is a FileList of File objects. List some properties.
 
@@ -51,7 +44,6 @@ var fileUploader = fileUploader || function(options) {
                 lists = FU.dropZoneId;
                 lists.innerHTML = '';
                 spanList = lists.querySelectorAll('span');
-//                            console.log(spanList);
                 if (spanList.length) {
                     removeChildren(lists);
                 }
@@ -67,24 +59,22 @@ var fileUploader = fileUploader || function(options) {
         reader.readAsDataURL(file);
     }
     FU.validate = function(file) {
-//        console.log(file);
         var err = [];
         if (file.size > o.maxFileSize) {
-            err.push('File to big');
-        }
-        if (!file.type.match('image.*')) {
-            err.push('Wrong type file');
+            var m = t("The file is too large. Its size cannot exceed $1 bytes.", [o.maxFileSize]);
+            err.push(m);
         }
         s = file.type.split('/');
-
-        if (!in_array(s[1], o.AllowedfileTypes)) {
-            err.push('File not allowed to load');
+        if (!file.type.match('image.*') || !in_array(s[1], o.AllowedfileTypes)) {
+            var str = '';
+            for (allowtype in o.AllowedfileTypes) {
+                str += o.AllowedfileTypes[allowtype] + " ";
+            }
+            var m = t("The file cannot be uploaded. Only files with these extensions are allowed: $1.", [str]);
+            err.push(m);
         }
-//        console.log(err.length);
+
         return err;
-//        console.log(s);
-//
-//        console.log(file.type);
 
 
     }
@@ -95,14 +85,25 @@ var fileUploader = fileUploader || function(options) {
     }
     FU.handleClick = function(e) {
         e.preventDefault();
-//        document.getElementById(o.InputfilesId);
 
-//        console.log(fileUploader.in);
         FU.InputfilesId.click();
     }
 
 })(fileUploader);
-
+t = function(key, rep) {
+    text = '';
+    for (str in LangText) {
+        if (key == str) {
+            text = LangText[str];
+        }
+    }
+    if (rep != null) {
+        for (var i = 0; i < rep.length; i++) {
+            text = text.replace(new RegExp("\\$" + (i + 1), 'g'), rep[i]);
+        }
+    }
+    return text;
+}
 function in_array(needle, haystack, strict) {
 
     var found = false, key, strict = !!strict;

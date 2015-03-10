@@ -9,6 +9,10 @@ class UserController extends Controller {
 
     public function profileAction()
     {
+        if (!AuthState::init()->islogged())
+        {
+            $this->redirect("index/index");
+        }
         $userData = AuthState::init()->getData();
         $usermodel = UserModel::model();
         $this->view->usermodel = $usermodel;
@@ -29,17 +33,17 @@ class UserController extends Controller {
                 'required' => true,
                 'min' => 6,
                 'max' => 20
-                  ), 'New password');
+                  ), Translate::t('new password'));
 
         $userModel->addRule('new_password_again', array(
                 'required' => true,
                 'min' => 6,
                 'max' => 20,
                 'matches' => 'new_password',
-                  ), 'New password Again');
+                  ), Translate::t('new password again'));
 
-        $userModel->setAttributeLabel('password', 'Current password');
-        $userModel->unsetRule('email', 'required');
+        $userModel->setAttributeLabel('password', Translate::t('Current password'));
+        $userModel->delRule('email');
         $userModel->unsetRule('username', 'required');
         $userModel->unsetRule('password_again', 'required');
 
@@ -53,7 +57,8 @@ class UserController extends Controller {
                 $inputPassword = InputRequest::getPostModel($userModel, 'password');
                 if ($user['password'] !== Hash::make($inputPassword, $user['salt']))
                 {
-                    $form->addError('Пароль не совпадает с текущим');
+                    ;
+                    $form->addError(Translate::t('new password does not match with the current password'));
                 } else
                 {
                     $salt = Hash::salt();
@@ -64,11 +69,11 @@ class UserController extends Controller {
                     ));
                     if ($update)
                     {
-                        Message::show('update', 'Passs was be  successful updated');
+                        Message::show('update', Translate::t('Passsword updated successfully'));
                         $this->redirect("index");
                     } else
                     {
-                        $form->addError('Пароль не был обновлен');
+                        $form->addError(Translate::t("Passsword didn't update"));
                     }
                 }
             }
@@ -90,7 +95,11 @@ class UserController extends Controller {
         $userModel->addRule('email', array(
                 "required" => true,
                 "type" => 'email',
-                  ), 'Email to ');
+                  ), Translate::t('Email to'));
+        $userModel->addRule('captcha', array(
+                'required' => true,
+                'type' => 'captcha',
+                  ), Translate::t('сaptcha'));
         $form = new Form($userModel);
 
         if (InputRequest::IsPostRequest())
@@ -117,20 +126,21 @@ class UserController extends Controller {
                         ));
                     }
                     $host = Config::get('host');
-                    $message = "Для востановления пероля перейдите по следующей ссылке:<br>";
-                    $message .= "<a href='{$host}user/recoverpassword/key/{$key}'>Перейти для востановления</a>";
+
+                    $message = Translate::t('For activation account follow the link') . ":<br>";
+                    $message .= "<a href='{$host}user/recoverpassword/key/{$key}'>" . Translate::t('Click to Recover') . "</a>";
                     $send = Mail::send($emailInput, 'Recover password', $message);
                     if ($send)
                     {
-                        Message::show('update', 'на указанный email был выслан код');
+                        Message::show('update', Translate::t('E-mail has been sent. Check your mail'));
                         $this->redirect('index');
                     } else
                     {
-                        $form->addError('Не удалось отправить почту');
+                        $form->addError(Translate::t("Can't send Email"));
                     }
                 } else
                 {
-                    $form->addError('Email не найден');
+                    $form->addError(Translate::t("Email not found"));
                 }
             }
         }
@@ -160,14 +170,14 @@ class UserController extends Controller {
                 'required' => true,
                 'min' => 6,
                 'max' => 20
-                  ), 'New password');
+                  ), Translate::t('new password'));
 
         $userModel->addRule('new_password_again', array(
                 'required' => true,
                 'min' => 6,
                 'max' => 20,
                 'matches' => 'new_password',
-                  ), 'New password Again');
+                  ), Translate::t('new password again'));
         $form = new Form($userModel);
 
         if (InputRequest::IsPostRequest())
@@ -186,7 +196,8 @@ class UserController extends Controller {
                     $UserrecoverModel->update($rowRecover[0]['user_recover_id'], array(
                             "recover_key" => null,
                     ));
-                    Message::show('update', 'Пароль изменен на новый попробуйте войти');
+                    ;
+                    Message::show('update', Translate::t('Password successfully updated'));
                     $this->redirect('index');
                 }
             }
@@ -218,7 +229,8 @@ class UserController extends Controller {
         ));
         if ($is_update)
         {
-            Message::show('update', 'Ваш акаунт был активирован');
+
+            Message::show('update', Translate::t("Your account has been activated"));
             $this->redirect('index');
         }
 

@@ -11,8 +11,6 @@ class IndexController extends Controller {
     {
 
         $this->view->user = AuthState::init()->getData();
-//        Helper::PR(AuthState::init()->getData());
-//        Helper::PR($_SESSION);
         if (AuthState::init()->islogged())
         {
             $this->view->render('index/index');
@@ -30,26 +28,25 @@ class IndexController extends Controller {
 
     public function registerAction()
     {
-       
+
         $userModel = UserModel::model();
         $userModel->addRule('captcha', array(
                 'required' => true,
                 'type' => 'captcha',
-                  ), 'Captcha');
+                  ), Translate::t('сaptcha'));
 
+        $userModel->setAttributeLabel('password_again', Translate::t('password again'));
         $UserpictureModel = UserpictureModel::model();
 
         $UserpictureModel->addRule('image', array(
                 'type' => 'image'
                   ), 'Avatar');
-
         $UseraddressModel = UseraddressModel::model();
         $models = array($userModel, $UserpictureModel, $UseraddressModel);
         $form = new Form($models);
-       
+
         if (InputRequest::IsPostRequest())
         {
-//            Helper::PR($_FILES);
             if ($form->validate())
             {
                 try
@@ -87,7 +84,6 @@ class IndexController extends Controller {
             }
         }
         $countries = CountryModel::model()->selectAll();
-//        Helper::PR($country);
         $this->view->countries = $countries;
         $this->view->form = $form;
         $this->view->userModel = $userModel;
@@ -102,18 +98,11 @@ class IndexController extends Controller {
     {
         if ($id = Router::getParamsByKey("id"))
         {
-
             header('Content-Type: application/json');
-
-// now output our json object
-//        echo '{"name":"darian","lastname":"brown","age":87,"adress":{"21 somewhere street","my city","Australia"}}';
-//        header('Content-type: application/json');
             $cities = CityModel::model()->find('CountryCode', $id);
             $result = json_encode($cities);
-//        Helper::PR($result);
             echo $result;
         }
-//        return  $result;
     }
 
     private function insertActivationKey($id)
@@ -205,8 +194,8 @@ class IndexController extends Controller {
         $key = Session::init()->get('activation_hash');
 
         Session::init()->deleteSession('activation_hash');
-        $message = "Для активации акаунта перейдите по следующей ссылке:<br>";
-        $message .= "<a href='{$host}user/useractivate/key/{$key}'>Перейти для активации</a>";
+        $message = Translate::t('For activate the Account, click on the following link').":<br>";
+        $message .= "<a href='{$host}user/useractivate/key/{$key}'>".Translate::t('Activate Account')."</a>";
         $send = Mail::send($emailTo, 'Recover password', $message);
         return $send;
     }

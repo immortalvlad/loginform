@@ -25,14 +25,14 @@ class UserModel extends Model {
                                 'required' => true,
                                 'type' => 'email',
                                 'min' => 6,
-                                'max' => 50,
+                                'max' => 30,
                                 'unique' => $this
                         ),
                         "username" => array(
                                 'required' => true,
                                 'type' => 'login',
                                 'min' => 5,
-                                'max' => 20,
+                                'max' => 10,
                                 'unique' => $this
                         ),
                         "telephone" => array(
@@ -43,6 +43,7 @@ class UserModel extends Model {
                         "password" => array(
                                 'required' => true,
                                 'min' => 6,
+                                'max' => 25,
                         ),
                         "password_again" => array(
                                 'required' => true,

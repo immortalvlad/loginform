@@ -1,3 +1,187 @@
+var GLOBALNAMEPROP;
+var Node = function(name) {
+    this.children = [];
+    GLOBALNAMEPROP = name;
+    this.create = function(clsName, val, tName) {
+        className = "new " + clsName + "()";
+        classObj = eval(className);
+        classObj.val = val;
+        classObj.tName = tName;
+        this.children.push(classObj);
+    }
+}
+
+Node.prototype = {
+    add: function(type, val, tName) {
+        if (type == 'type' || type == 'unique' || type == 'matches') {
+            if (val == 'obj' || type == 'matches' || val == 'captcha') {
+                return false;
+            }
+            this.create(val, val, tName);
+        } else {
+            this.create(type, val, tName);
+        }
+    },
+    validate: function() {
+        var length = this.children.length;
+        for (var child in this.children) {
+            validObj = this.children[child].validate();
+        }
+    },
+    remove: function(child) {
+        var length = this.children.length;
+        for (var i = 0; i < length; i++) {
+            if (this.children[i] === child) {
+                this.children.splice(i, 1);
+                return;
+            }
+        }
+    },
+    getChild: function(i) {
+        return this.children[i];
+    },
+    hasChildren: function() {
+        return this.children.length > 0;
+    },
+    getChilds: function() {
+        return this.children;
+    }
+}
+
+var required = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var m = t("$1 cannot be blank.", [this.tName]);
+            if (GLOBALNAMEPROP.Inputvalue == '') {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                GLOBALNAMEPROP.hasError = false;
+                GLOBALNAMEPROP.delError(m);
+            }
+        }
+    };
+}
+
+var min = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var m = t("$1 is too short (minimum is $2 characters).", [this.tName, this.val]);
+            if (GLOBALNAMEPROP.Inputvalue.length < parseInt(this.val)
+                    && GLOBALNAMEPROP.Inputvalue != "") {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                if (!GLOBALNAMEPROP.hasError) {
+                    GLOBALNAMEPROP.delError(m);
+                    GLOBALNAMEPROP.hasError = false;
+                }
+            }
+        }
+    };
+}
+var max = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var m = t("$1 is too long (maximum is $2 characters).", [this.tName, this.val]);
+            if (GLOBALNAMEPROP.Inputvalue.length > parseInt(this.val)
+                    && GLOBALNAMEPROP.Inputvalue != "") {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                if (!GLOBALNAMEPROP.hasError) {
+                    GLOBALNAMEPROP.delError(m);
+                    GLOBALNAMEPROP.hasError = false;
+                }
+            }
+        }
+    };
+}
+var email = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var m = t("Field $1 is not a valid email address.", [this.tName]);
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+            if (!re.test(GLOBALNAMEPROP.Inputvalue)) {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                if (!GLOBALNAMEPROP.hasError) {
+                    GLOBALNAMEPROP.delError(m);
+                    GLOBALNAMEPROP.hasError = false;
+                }
+            }
+        }
+    };
+}
+var login = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var m = t("The format of $1 is invalid.", [this.tName]);
+            var re = /^[A-Za-z0-9]{1,20}$/;
+            if (!re.test(GLOBALNAMEPROP.Inputvalue) &&
+                    GLOBALNAMEPROP.Inputvalue != "") {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                if (!GLOBALNAMEPROP.hasError) {
+                    GLOBALNAMEPROP.delError(m);
+                    GLOBALNAMEPROP.hasError = false;
+                }
+            }
+        }
+    };
+}
+var phone = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+
+            var m = t("The format of $1 is invalid.", [this.tName]);
+            var re = /^(\(\d{1,4}\)){0,1}([\+{0,1},\s{0,1}]{0,})([\d,\s]{0,}){0,}$/;
+            if (!re.test(GLOBALNAMEPROP.Inputvalue)) {
+                GLOBALNAMEPROP.hasError = true;
+                GLOBALNAMEPROP.addError(m);
+            } else {
+                if (!GLOBALNAMEPROP.hasError) {
+                    GLOBALNAMEPROP.delError(m);
+                    GLOBALNAMEPROP.hasError = false;
+                }
+            }
+        }
+    };
+}
+var image = function() {
+    this.val;
+    this.tName;
+    return {
+        validate: function() {
+            var d = fileUploader.getError();
+            var mess = '';
+            for (err in d) {
+                mess += d[err] + "\n";
+            }
+            if (mess) {
+                alert(mess);
+
+            }
+        }
+    };
+}
+
+
 
 
 var Validator = {};
@@ -9,18 +193,41 @@ var Validator = {};
     v.tableName = '';
     v.Inputvalue = '';
     v.err = [];
+    v.typeVal = '';
     v.fieldErr = [];
+    v.hasError = false;
     v.init = function() {
-//            inp = document.getElementsByTagName('input');
         inp = document.querySelectorAll('input[type=text],input[type=password]');
         for (var i = 0; i < inp.length; i++) {
             id = inp[i].id;
-//                console.log(id);
             if (id) {
                 document.getElementById(id).addEventListener('blur', v.startValidate, false);
             }
         }
+        imageObj = document.getElementById("image");
+        form = document.getElementById("form")
+        if (imageObj) {
+            imageObj.addEventListener('change', v.startValidate, false);
+        }
+        if (form) {
+            form.addEventListener('submit', v.submit, false);
+        }
     };
+    v.submit = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        inp = document.querySelectorAll('input[type=text],input[type=password]');
+        for (var i = 0; i < inp.length; i++) {
+            id = inp[i].id;
+            if (id) {
+                document.getElementById(id).addEventListener('click', v.startValidate, false);
+                document.getElementById(id).click();
+            }
+        }
+        if (!v.hasError) {
+            document.getElementById("form").submit();
+        }
+    }
     v.startValidate = function() {
         v.selObjId = this.id;
         v.selObjName = this.name;
@@ -31,127 +238,30 @@ var Validator = {};
 
     v.getRule = function() {
         i = v.getIndex(v.tableName, j);
-//            console.log(j[i][v.tableName]);
         p_i = v.getIndex(v.tableVal, j[i][v.tableName]);
         props = j[i][v.tableName][p_i][v.tableVal];
-//            console.log(props);
         v.validate(props);
 
     }
 
+
     v.validate = function(props) {
-//            console.log(v.selObjId);
-        
+        node = new Node(v);
+        v.hasError = false;
         for (var i = 0; i < props.length; i++) {
             for (var prop in props[i]) {
                 type = prop;
-                typeVal = props[i][prop];
-                var field = t(v.tableVal);
-//                    console.log(field);
-                if (type == 'required' && v.Inputvalue == '') {
-                    console.log("req");
-                    m = t("$1 is required", [field]);
-                    v.addError(m);                    
-//                        v.addFieldError(m);
-                } else if (v.Inputvalue != '') {
-                    if (type == 'required' && v.Inputvalue != '') {
-                        m = t("$1 is required", [field]);
-//                            v.delError(m);
-                      //  v.removeErrorClass(v.selObjId);
-//                        console.log(v.err);
-                        if (in_array(m, v.err)) {
-                            v.delError(m);
-                        }
-                    }
-                    switch (type) {
-                        case 'min' :
-                            m = v.tableVal + " must be a minimum of " + typeVal + " characters";
-                            if (v.Inputvalue.length < parseInt(typeVal)) {
-                            console.log('dfgdfgdf');
-                                v.addError(m);
-                            } else {
-
-                                if (in_array(m, v.err)) {
-                                  //  v.delError(m);
-                                }
-                            }
-                            break;
-                        case 'max' :
-                            m = v.tableVal + " must be a minimum of " + typeVal + " characters";
-                            if (v.Inputvalue.length > parseInt(typeVal)) {
-                                v.addError(m);
-                            } else {
-
-                                if (in_array(m, v.err)) {
-                                   // v.delError(m);
-                                }
-                            }
-                            break;
-                        case 'type' :
-
-                            switch (typeVal) {
-                                case 'email':
-                                    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                                    m = v.tableVal + " must be a minimum of " + typeVal + " characters";
-                                    if (!re.test(v.Inputvalue)) {
-                                        v.addError(m);
-                                    } else {
-
-//                                            console.log(v.Inputvalue);
-                                        v.delError(m);
-                                        if (in_array(m, v.err)) {
-                                        }
-                                    }
-                                    break;
-                                case 'login':
-                                    var re = /^[A-Za-z0-9]{1,20}$/;
-                                    m = "Incorect " + v.tableVal + ", use only letters or digits";
-                                    if (!re.test(v.Inputvalue)) {
-//                                            console.log('errr');
-                                        v.addError(m);
-                                    } else {
-
-                                        v.delError(m);
-                                        /*if (in_array(m, v.err)) {
-                                         v.delError(m);
-                                         }*/
-                                    }
-                                    break;
-                                case 'phone':
-                                    var re = /^(\(\d{1,4}\)){0,1}([\+{0,1},\s{0,1}]{0,})([\d,\s]{0,}){0,}$/;
-                                    m = "Incorect " + v.tableVal + "";
-                                    if (!re.test(v.Inputvalue)) {
-                                        v.addError(m);
-                                    } else {
-                                        v.delError(m);
-                                        /*if (in_array(m, v.err)) {
-                                         }*/
-                                    }
-                                    break;
-                                case 'image':
-                                    var d = fileUploader.getError();
-                                    var mess = '';
-                                    for (err in d) {
-                                        mess += d[err] + "\n";
-                                    }
-                                    if (mess) {
-                                        alert(mess);
-
-                                    }
-                                    console.log(d);
-
-                                    break;
-                            }
-                            break;
-                    }
-                }
-                //   console.log("value = " + v.Inputvalue + " " + type + " = " + typeVal);
+                v.typeVal = props[i][prop];
+                v.field = t(v.tableVal);
+//                console.log(v.field);
+                node.add(type, v.typeVal, v.field);
             }
         }
-//            v.showError();
-//            console.log(v.err);
-        console.log(v.fieldErr);
+
+        node.validate();
+
     }
+
     v.showError = function() {
         for (id in v.fieldErr) {
             console.log(id);
@@ -159,13 +269,8 @@ var Validator = {};
         }
     }
     v.addErrorClass = function(id) {
-//            console.log(id);
         doc = document.getElementById(id);
-//            doc.classList.add("error");
-//            console.log(doc);
-//            doc.value="dfd";
         doc.className = "error";
-//            doc.classList.add("error");
         div = document.createElement('div');
         div.className = 'errorMessage';
         div.textContent = v.getErrorById(id);
@@ -195,13 +300,12 @@ var Validator = {};
         selDivs = doc.parentNode.querySelectorAll(".errorMessage");
 
         for (var i = 0; i < selDivs.length; i++) {
-//               selDivs[i];
             selDivs[i].remove();
-//                console.log(selDivs[i]);
 
         }
     }
     v.addError = function(m) {
+        v.removeErrorClass(v.selObjId);
         if (!in_array(m, v.err)) {
             v.err.push(m);
         }
@@ -209,11 +313,7 @@ var Validator = {};
             o = '{"' + v.selObjId + '":"' + m + '"}';
             v.fieldErr.push(JSON.parse(o));
         }
-            v.addErrorClass(v.selObjId);
-//            console.log(v.fieldErr);
-//            s.push(m);
-//            v.fieldErr[v.selObjId] = m;
-        // v.showError();
+        v.addErrorClass(v.selObjId);
     }
     v.setValues = function() {
         v.getNameFromId(v.selObjName);
@@ -231,17 +331,14 @@ var Validator = {};
 
 
     v.getNameFromId = function(name) {
-//            name = 'user_entity[username]';
 
         tableValPat = /\[(.*)\]/i;
         match = tableValPat.exec(name);
         v.tableVal = match[1];
-//            console.log(v.tableVal);
 
         tableNamePat = /^(.*)\[/i;
         match = tableNamePat.exec(name);
         v.tableName = match[1];
-//            console.log(v.tableName);
     }
     v.delError = function(m) {
         deleteIndexArray(m, v.err);
@@ -270,7 +367,6 @@ var Validator = {};
                 if (keyName == v.selObjId) {
                     found = true;
                 }
-//                    console.log(keyName);
             }
             if (v.fieldErr[key][v.selObjId] == m) {
                 found = true;
@@ -281,7 +377,6 @@ var Validator = {};
     }
     deleteIndexObjArray = function(m) {
         for (key in v.fieldErr) {
-//                console.log(key);
             if (v.fieldErr[key][v.selObjId] == m) {
                 v.fieldErr.splice(key, 1);
                 break;
@@ -302,7 +397,6 @@ var Validator = {};
         text = '';
         for (str in LangText) {
             if (key == str) {
-//                    console.log(str + " = " + LangText[str]);
                 text = LangText[str];
             }
         }

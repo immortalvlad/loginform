@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <coverage xmlns="http://www.netbeans.org/ns/code-coverage/1" enabled="false"/>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>protect/theme/js/validator.js</url>
+            <bookmark id="1">
+                <name/>
+                <line>256</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/OpenServer/domains/LoginForm/protect/models/UseraddressModel.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/views/index/notLogin.php</file>
             <file>file:/E:/OpenServer/domains/LoginForm/protect/views/index/loginForm.php</file>
-            <file>file:/E:/OpenServer/domains/LoginForm/components/HTML.php</file>
-            <file>file:/E:/OpenServer/domains/LoginForm/protect/theme/js/fileUpload.js</file>
-            <file>file:/E:/OpenServer/domains/LoginForm/protect/views/index/newjson1.json</file>
-            <file>file:/E:/OpenServer/domains/LoginForm/protect/controllers/IndexController.php</file>
             <file>file:/E:/OpenServer/domains/LoginForm/components/Form.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/theme/js/validator.js</file>
             <file>file:/E:/OpenServer/domains/LoginForm/protect/models/UserModel.php</file>
-            <file>file:/E:/OpenServer/domains/LoginForm/protect/views/index/newjson.json</file>
-            <file>file:/E:/OpenServer/domains/LoginForm/protect/views/index/registerForm.php</file>
-            <file>file:/E:/OpenServer/domains/LoginForm/protect/theme/sass/style.scss</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/lang/ru.php</file>
+            <file>file:/E:/OpenServer/domains/LoginForm/protect/controllers/UserController.php</file>
         </group>
     </open-files>
 </project-private>

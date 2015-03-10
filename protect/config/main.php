@@ -15,7 +15,7 @@ return array(
         'cookie_expiry' => 2000,
         'cookie_lang_expiry' => 20000,
         'file_allowed' =>array('png', 'jpg', 'jpeg', 'gif'),
-        'file_max_size' => 1000000,
+        'file_max_size' => 100000000,
         'token_name' => 'token',
         'languages' => array(
                 "ru",

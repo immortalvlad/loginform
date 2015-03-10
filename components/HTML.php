@@ -60,7 +60,7 @@ class HTML {
             {
                 ?>
                 <div class="errorSummary">
-                    <p>Необходимо исправить следующие ошибки:</p>
+                    <p><?php echo  Translate::t('Please fix the following input errors:');?></p>
                     <ul>
                         <?php
                         foreach ($errors as $error)
