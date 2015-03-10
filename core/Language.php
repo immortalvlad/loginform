@@ -45,7 +45,8 @@ class Language {
      */
     public function getlanguages()
     {
-        if (!empty(Config::get("languages")))
+        $config = Config::get("languages");
+        if (!empty($config))
         {
             return Config::get("languages");
         } else

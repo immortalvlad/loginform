@@ -149,10 +149,11 @@ class AuthState {
 
     public function getData()
     {
+        $sessionName = Session::init()->get($this->_sessionName);
         if (!empty($this->_data[0]))
         {
             return $this->_data[0];
-        } elseif (!empty(Session::init()->get($this->_sessionName)))
+        } elseif (!empty($sessionName))
         {
             $this->_data[0] = Session::init()->get($this->_sessionName);
             return $this->_data[0];
